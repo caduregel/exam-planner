@@ -1,5 +1,5 @@
 import App from "./App";
-import ExampInput from "./pages/examInput";
+import ExampInput from "./pages/ExamInput";
 
 
 const routes = [
@@ -11,8 +11,6 @@ const routes = [
         path: "/exam-info",
         element: <ExampInput />
     }
-
-
 ];
 
 export default routes;
