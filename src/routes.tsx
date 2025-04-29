@@ -1,5 +1,6 @@
 import App from "./App";
 import ExampInput from "./pages/ExamInput";
+import ExamPlan from "./pages/ExamPlan";
 
 
 const routes = [
@@ -10,6 +11,9 @@ const routes = [
     {
         path: "/exam-info",
         element: <ExampInput />
+    },
+    {   path: "/exam-plan",
+        element: <ExamPlan />
     }
 ];
 

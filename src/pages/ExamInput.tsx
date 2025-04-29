@@ -10,34 +10,41 @@ import { Label } from "../components/ui/label"
 import { Button } from "../components/ui/button"
 import { Calendar } from "../components/ui/calendar"
 import React, { useEffect, useState } from "react"
-
-interface ExamInfo {
-    subject: string
-    date: string
-    toDo: string[]
-}
+import { IExamInfo } from "@/interfaces/IExamInfo"
+import { Link } from "react-router"
+import { validateDate } from "@/util/dateHandlings"
 
 function ExampInput() {
-    const [subject, setSubject] = useState<string>("")
-    const [date, setDate] = useState<Date | undefined>(undefined)
-    const [toDos, setToDos] = useState<string[]>([""])
+    const localExam = localStorage.getItem("exam")
 
-    const [examInfo, setExamInfo] = useState<ExamInfo>({
+    const [examInfo, setExamInfo] = useState<IExamInfo>(localExam ? JSON.parse(localExam || "") : {
         subject: "",
-        date: "",
+        date: new Date,
         toDo: [],
     })
 
+    const [subject, setSubject] = useState<string>(examInfo.subject)
+    const [date, setDate] = useState<Date>(new Date(examInfo.date))
+    const [toDos, setToDos] = useState<string[]>([...examInfo.toDo])
+
+    const [filledStatus, setFilledStatus] = useState<boolean>(false)
+
     useEffect(() => {
-        const examInfo = {
+        const newExamInfo = {
             subject: subject,
-            date: String(date),
+            date: date,
             toDo: [...toDos],
         }
-        setExamInfo(examInfo)
-        console.log(examInfo)
-    }, [subject, date, toDos])
+        console.log(subject !== "" && toDos.length > 0 && validateDate(date))
+        if (subject !== "" && toDos.length > 0 && validateDate(date)) {
+            setFilledStatus(true)
+        } else {
+            setFilledStatus(false)
+        }
 
+        setExamInfo(newExamInfo)
+        localStorage.setItem("exam", JSON.stringify(newExamInfo))
+    }, [subject, date, toDos])
 
     const handleToDoChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         let newTodo: string[] = [...toDos];
@@ -51,9 +58,13 @@ function ExampInput() {
         setToDos(newTodo)
     }
 
+    const handleDateChange = (newDate: Date | undefined) => {
+        newDate ? setDate(newDate) : console.log("Invalid Date")
+    }
+
     return (
         <>
-            <div className="flex flex-col items-center justify-center h-screen">
+            <div className="flex flex-col items-center justify-center">
                 <Card className="w-[40vw]">
                     <CardHeader>
                         <CardTitle>Exam Info</CardTitle>
@@ -66,7 +77,7 @@ function ExampInput() {
                         {examInfo.toDo.map((item, index) => (
                             <div className="flex flex-row items-center space-x-2" key={index}>
                                 <Button variant="outline" className="hover:cursor-pointer" onClick={() => { handleToDoDelete(index) }}>X</Button>
-                                <Input key={index} placeholder={`E.g Chapter ${index + 1}`} value={item} onChange={(e) => { handleToDoChange(e, index) }} />
+                                <Input key={index} placeholder={`E.g Revise Chapter ${index + 1}`} value={item} onChange={(e) => { handleToDoChange(e, index) }} />
                             </div>
                         ))}
                         <Button variant="outline" className="hover:cursor-pointer max-w-fit" onClick={() => { setToDos([...toDos, ""]) }}>Add To Do</Button>
@@ -77,14 +88,18 @@ function ExampInput() {
                             <Calendar
                                 mode="single"
                                 selected={date}
-                                onSelect={setDate}
+                                onSelect={handleDateChange}
                                 className="rounded-md border max-w-fit"
                             />
                         </div>
 
                     </CardContent>
                     <CardFooter>
-                        <Button variant="outline" className="hover:cursor-pointer"> Make a study plan</Button>
+                        {filledStatus ?
+                            <Link to="/exam-plan" >
+                                <Button variant="outline" className="hover:cursor-pointer"> Make a study plan</Button>
+                            </Link> : <Button variant="outline" disabled> Make a study plan</Button>
+                        }
                     </CardFooter>
                 </Card>
 
