@@ -7,7 +7,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { IExamInfo } from "@/interfaces/IExamInfo"
 import { validateDate } from "@/util/dateHandlings"
 import { dateToDoMatcher, getDates } from "@/util/dateToDoMatcher"
