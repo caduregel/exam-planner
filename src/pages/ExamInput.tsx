@@ -65,7 +65,7 @@ function ExampInput() {
     return (
         <>
             <div className="flex flex-col items-center justify-center">
-                <Card className="w-[40vw]">
+                <Card className="min-w-[40vw]">
                     <CardHeader>
                         <CardTitle>Exam Info</CardTitle>
                     </CardHeader>

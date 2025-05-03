@@ -56,9 +56,10 @@ function ExamPlan() {
 
     return (
         <>
-            <div className="flex flex-col items-start gap-5" >
+            <div className="flex flex-col md:items-start gap-5 items-center" >
                 <h1 className="text-2xl font-bold">Your {subject} schedule</h1>
-                <div className="grid grid-cols-4 mt-auto w-full">
+                <Link to="/exam-info"><Button variant="outline">Go back</Button></Link>
+                <div className="flex flex-col justify-center md:grid md:grid-cols-4 mt-auto md:w-full">
                     {dateToDos.map((dateToDo) => {
                         return (<DateToDo date={dateToDo.date} toDos={[...dateToDo.toDos]} />)
                     })}

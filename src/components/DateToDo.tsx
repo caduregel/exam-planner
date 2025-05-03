@@ -10,7 +10,7 @@ function DateToDo({ date, toDos }: IdateToDo) {
 
     return (
         <>
-            <Card className="p-5 rounded-none min-h-20">
+            <Card className="p-5 rounded-none md:min-h-40 md:min-w-40 min-h-[60vw] min-w-[60vw]">
                 <CardTitle className="flex items-start px-6">{dateString} </CardTitle>
                 <CardContent className="flex flex-col items-start">
                     {toDos.map(todo => <p className="">{todo}</p>)}
