@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeClosed } from "lucide-react"
 import { FaGoogle, FaApple } from "react-icons/fa"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { supabase } from "../supabaseClient"
 import { useNavigate } from "react-router"
 
@@ -56,7 +56,7 @@ function SignupPage() {
             console.log("success!")
             navigate("/home/dashboard")
         } catch (e) {
-            setErrors([`Signup failed: ${e.message || e}`])
+            if (e instanceof Error) setErrors([`Signup failed: ${e.message || e}`])
         }
     }
 
