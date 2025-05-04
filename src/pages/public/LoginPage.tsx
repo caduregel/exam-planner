@@ -37,7 +37,7 @@ function LoginPage() {
     const signInWithEmail = () => {
         handleLogin(email, password).then(() => {
             console.log("success!")
-            navigate("/home/dashboard")
+            navigate("/home")
         }).catch((e) => {
             console.log(e)
         })

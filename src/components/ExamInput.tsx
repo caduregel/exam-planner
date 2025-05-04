@@ -12,29 +12,40 @@ import { Calendar } from "./ui/calendar"
 import React, { useEffect, useState } from "react"
 import { IExamInfo } from "@/interfaces/IExamInfo"
 import { validateDate } from "@/util/dateHandlings"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { SpreadType } from "@/util/dateToDoMatcher"
 
 interface IExamInputProps {
     examInfo: IExamInfo
     setExamInfo: (examInfo: IExamInfo) => void;
     handleExamAdd: () => void;
+    setTaskSpread: (newTaskSpread: SpreadType)=>void;
+    taskSpread: SpreadType;
 }
 
-function ExampInput({ examInfo, setExamInfo, handleExamAdd }: IExamInputProps) {
-    const [subject, setSubject] = useState<string>(examInfo.subject)
+function ExampInput({ examInfo, setExamInfo, handleExamAdd, setTaskSpread, taskSpread }: IExamInputProps) {
+    const [subject, setSubject] = useState<string>(examInfo.title)
     const [date, setDate] = useState<Date>(new Date(examInfo.date))
     const [toDos, setToDos] = useState<string[]>([...examInfo.toDo])
+
+    const spreadOptions = [
+        { value: "even", label: "Even Spread" },
+        { value: "start", label: "Start Spread" },
+        { value: "end", label: "End Spread" },
+        { value: "middle", label: "Middle Spread" },
+    ]
 
     const [filledStatus, setFilledStatus] = useState<boolean>(false)
 
     useEffect(() => {
         const newExamIno = {
-            subject: subject,
+            title: subject,
             date: date,
             toDo: toDos
         }
         setExamInfo(newExamIno)
-        if (subject !== "" && validateDate(date) && toDos.length !== 0) { 
-            setFilledStatus(true) 
+        if (subject !== "" && validateDate(date) && toDos.length !== 0) {
+            setFilledStatus(true)
         } else setFilledStatus(false)
     }, [
         subject, date, toDos
@@ -85,12 +96,38 @@ function ExampInput({ examInfo, setExamInfo, handleExamAdd }: IExamInputProps) {
                             className="rounded-md border max-w-fit"
                         />
                     </div>
+                    <div>
+                        <label className="block mb-1 font-medium text-sm">Task Spread</label>
+                        <Select
+                            value={taskSpread}
+                            onValueChange={(value) => setTaskSpread(value as SpreadType)}
+                        >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Select spread" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {spreadOptions.map((opt) => (
+                                    <SelectItem key={opt.value} value={opt.value}>
+                                        {opt.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
+                    {/* Optional: Show description below select */}
+                    <p className="text-sm text-muted-foreground">
+                        {taskSpread === "even" && "Tasks spread evenly between now and the exam."}
+                        {taskSpread === "start" && "More tasks now, less as the exam approaches."}
+                        {taskSpread === "end" && "Not a lot of tasks now, more intense as the exam approaches"}
+                        {taskSpread === "middle" && "start off easy, work hard for a short while, and ease off before the exam"}
+
+                    </p>
                 </CardContent>
                 <CardFooter>
                     {filledStatus ?
                         <Button variant="outline" className="hover:cursor-pointer" onClick={handleExamAdd}> Make a study plan</Button>
-                        : <Button variant="outline" disabled> Make a study plan</Button>
+                        : <Button variant="outline" disabled>Generate a study plan</Button>
                     }
                 </CardFooter>
             </Card>

@@ -8,9 +8,9 @@ import HomeLayout from "./HomeLayout";
 import SignupPage from "./pages/public/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import ExamsPage from "./pages/ExamsPage";
-import ExamPage from "./pages/ExamPage";
 import TasksPage from "./util/TasksPage";
 import CalendarPage from "./pages/CalendarPage";
+import ExamPage from "./pages/ExamPage";
 
 const routes = [
   {

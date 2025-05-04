@@ -68,7 +68,7 @@ function SignupPage() {
                 });
             }
             console.log("success!")
-            navigate("/home/dashboard")
+            navigate("/home")
         } catch (e) {
             if (e instanceof Error) setErrors([`Signup failed: ${e.message || e}`])
         }

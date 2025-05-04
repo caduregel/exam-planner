@@ -5,13 +5,13 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
 import { IProfile } from "@/interfaces/IProfile"
 import { getUserProfile } from "@/util/api"
 import { useAuth } from "./providers/AuthProvider"
+import { User } from "lucide-react"
 
 export function UserDropdown() {
     const { session } = useAuth()
@@ -35,6 +35,10 @@ export function UserDropdown() {
         fetchProfile()
     }, [session])
 
+    const handleLogout = () => {
+
+    }
+
     if (loading) return <p>Loading..</p>
 
     if (!profile) {
@@ -46,8 +50,11 @@ export function UserDropdown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="py-5 hover:cursor-pointer">
-                    <img src={profile.avatar_url} alt="avatar" className="size-8 rounded-lg" />
+                <Button variant="ghost" className="py-5 hover:cursor-pointer md:px-5">
+                    {profile.avatar_url == ""
+                        ? <User />
+                        : <img src={profile.avatar_url} alt="avatar" className="size-8 rounded-lg" />
+                    }
                     <p>{profile.username}</p>
                 </Button>
             </DropdownMenuTrigger>
@@ -59,9 +66,8 @@ export function UserDropdown() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                     Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
