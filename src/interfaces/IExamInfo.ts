@@ -1,5 +1,5 @@
 export interface IExamInfo {
-    subject: string
+    title: string
     date: Date
     toDo: string[]
 }
