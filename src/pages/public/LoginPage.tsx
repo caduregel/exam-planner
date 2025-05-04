@@ -5,7 +5,8 @@ import { Eye, EyeClosed } from "lucide-react"
 // import { FaGoogle, FaApple } from "react-icons/fa";
 import { useState } from "react"
 import { supabase } from "../../lib/supabaseClient";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
+import { useAuth } from "@/components/providers/AuthProvider"
 
 async function handleLogin(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -42,8 +43,12 @@ function LoginPage() {
         })
     }
 
+    const { session } = useAuth()
+
+    if (session) return <Navigate to={"/home"} />
+
     return (
-        <div className="flex flex-col gap-5 items-center">
+        <div className="flex flex-col gap-5 items-center px-5">
             <h1 className="text-2xl font-semibold">Welcome back, ready to study?</h1>
             <div className="w-full flex flex-col">
                 <Label className="text-md">Email*</Label>

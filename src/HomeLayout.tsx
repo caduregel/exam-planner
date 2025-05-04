@@ -2,10 +2,15 @@ import { Outlet } from 'react-router'
 import PrivateNav from '@/components/PrivateNav'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@radix-ui/react-separator'
-import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { DynamicBreadCrumbs } from './components/DynamicBreadCrumbs'
 
-function App() {
+import { UserDropdown } from './components/UserDropdown'
+import { ThemeSwitcher } from './components/ThemeSwitcher'
+
+function HomeLayout() {
+
+
   return (
     <>
       <ProtectedRoute>
@@ -13,11 +18,16 @@ function App() {
           <SidebarProvider>
             <PrivateNav />
             <main className='p-2 w-full'>
-              <div className='flex'>
-                <SidebarTrigger className='hover:cursor-pointer' />
-                <Separator orientation='vertical' />
-                <Breadcrumb>
-                </Breadcrumb>
+              <div className='flex items-center gap-2 justify-between'>
+                <div className='flex items-center'>
+                  <SidebarTrigger className='hover:cursor-pointer' />
+                  <Separator orientation='vertical' />
+                  <DynamicBreadCrumbs />
+                </div>
+                <div className='flex items-center gap-2'>
+                <ThemeSwitcher />
+                <UserDropdown />
+                </div>
               </div>
               <Outlet />
             </main>
@@ -28,4 +38,4 @@ function App() {
   )
 }
 
-export default App
+export default HomeLayout

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { useAuth } from '../components/AuthProvider';
 import { Navigate } from 'react-router';
+import { useAuth } from './providers/AuthProvider';
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
   const { session, isLoading } = useAuth();

@@ -29,7 +29,7 @@ const routes = [
     path: "/home",
     element: <HomeLayout />,
     children: [
-      { path: "dashboard", element: <Dashboard /> },
+      { path: "", element: <Dashboard /> },
       { path: "exams", element: <ExamsPage /> },
       { path: "exams/:id", element: <ExamPage /> },
       { path: "calender", element: <CalenderPage /> },

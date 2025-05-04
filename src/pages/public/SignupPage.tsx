@@ -75,7 +75,7 @@ function SignupPage() {
     }
 
     return (
-        <div className="flex flex-col gap-5 items-center">
+        <div className="flex flex-col gap-5 items-center px-5">
             <h1 className="text-2xl font-semibold">Create an account</h1>
             <p className="text-stone-700">Enter the following fields to create your account</p>
 
