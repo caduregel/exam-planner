@@ -11,7 +11,7 @@ function ExamsPage() {
     })
 
     const handleExamAdd = () => {
-        console.log(newExamInfo)
+        
     }
 
     return (

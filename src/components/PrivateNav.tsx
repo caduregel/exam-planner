@@ -1,6 +1,6 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 import { Link } from "react-router";
-import { LayoutDashboard, ListCheck, NotebookPen } from "lucide-react";
+import { CalendarRange, LayoutDashboard, ListCheck, NotebookPen } from "lucide-react";
 
 function PrivateNav() {
 
@@ -10,7 +10,7 @@ function PrivateNav() {
                 <SidebarHeader className="flex flex-row items-center gap-2 p-5">
                     <Link to="/home/" className="flex items-center gap-5">
                         <img src="https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png" className="size-10 rounded-lg" />
-                        <h1 className="text-xl font-semibold">Company name</h1>
+                        <h1 className="text-xl font-semibold">Exam Planner</h1>
                     </Link>
                 </SidebarHeader>
                 <SidebarContent>
@@ -24,6 +24,19 @@ function PrivateNav() {
                                     </p>
                                 </Link>
                             </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild>
+                                <Link to="/home/calendar">
+                                    <CalendarRange />
+                                    <p className="text-lg">
+                                        Calendar
+                                    </p>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem>
                             <SidebarMenuButton asChild>
                                 <Link to="/home/exams">
                                     <NotebookPen />
@@ -32,6 +45,9 @@ function PrivateNav() {
                                     </p>
                                 </Link>
                             </SidebarMenuButton>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem>
                             <SidebarMenuButton asChild>
                                 <Link to="/home/tasks">
                                     <ListCheck />
@@ -42,9 +58,9 @@ function PrivateNav() {
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarGroup>
-                </SidebarContent>
+                </SidebarContent >
                 <SidebarFooter />
-            </Sidebar>
+            </Sidebar >
         </>
     )
 }

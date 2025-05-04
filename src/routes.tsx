@@ -9,8 +9,8 @@ import SignupPage from "./pages/public/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import ExamsPage from "./pages/ExamsPage";
 import ExamPage from "./pages/ExamPage";
-import CalenderPage from "./pages/CalenderPage";
 import TasksPage from "./util/TasksPage";
+import CalendarPage from "./pages/CalendarPage";
 
 const routes = [
   {
@@ -32,7 +32,7 @@ const routes = [
       { path: "", element: <Dashboard /> },
       { path: "exams", element: <ExamsPage /> },
       { path: "exams/:id", element: <ExamPage /> },
-      { path: "calender", element: <CalenderPage /> },
+      { path: "calendar", element: <CalendarPage /> },
       { path: "tasks", element: <TasksPage /> },
     ],
   },
