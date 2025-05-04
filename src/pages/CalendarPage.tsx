@@ -23,7 +23,7 @@ function CalenderPage() {
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
     return (
-        <div className="flex flex-col gap-5 p-5">
+        <div className="flex flex-col gap-5 md:p-5 py-5">
             <Select
                 defaultValue={currentMonthValue}
                 onValueChange={(value) => {
@@ -43,8 +43,17 @@ function CalenderPage() {
                 </SelectContent>
             </Select>
 
+            {/* Weekday headers mobile */}
+            <div className="grid grid-cols-7 gap-2 md:hidden">
+                {weekdays.map((day) => (
+                    <div key={day} className="text-center font-medium">
+                        {day[0]}
+                    </div>
+                ))}
+            </div>
+
             {/* Weekday headers */}
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid-cols-7 gap-1 hidden md:grid">
                 {weekdays.map((day) => (
                     <div key={day} className="text-center font-medium">
                         {day}
@@ -53,7 +62,7 @@ function CalenderPage() {
             </div>
 
             {/* Dates grid with offset */}
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-7 gap-1 md:gap-2">
                 {/* Empty slots for alignment */}
                 {Array.from({ length: firstDayOfWeek }).map((_, i) => (
                     <div key={`empty-${i}`} />
@@ -62,9 +71,9 @@ function CalenderPage() {
                 {daysInMonth.map((day) => (
                     <div
                         key={day}
-                        className="aspect-square rounded-xl bg-muted/50 flex items-center justify-center"
+                        className="aspect-square rounded-md md:rounded-sm bg-muted/50 flex"
                     >
-                        {day}
+                        <p className="p-1 md:p-2 text-xs md:text-base font-medium">{day}</p>
                     </div>
                 ))}
             </div>
