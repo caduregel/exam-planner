@@ -22,9 +22,9 @@ function ExamsPage() {
                         <CardHeader>
                             <CardTitle>Upcoming exams</CardTitle>
                         </CardHeader>
-<CardContent>
-    <p>some content</p>
-</CardContent>
+                        <CardContent>
+                            <p>some content</p>
+                        </CardContent>
                     </Card>
                     <ExampInput examInfo={newExamInfo} setExamInfo={setNewExamInfo} handleExamAdd={handleExamAdd} />
                 </div>
