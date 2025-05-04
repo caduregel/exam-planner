@@ -1,11 +1,9 @@
 import App from "./App";
-import ExamPlan from "./pages/ExamPlan";
 import LandingPage from "./pages/public/LandingPage";
 import LoginPage from "./pages/public/LoginPage";
 import PricingPage from "./pages/public/PricingPage";
 import AboutPage from "./pages/public/AboutPage";
 import NotFound from "./pages/public/NotFound";
-import ExamInput from "./components/ExamInput";
 import HomeLayout from "./HomeLayout";
 import SignupPage from "./pages/public/SignupPage";
 import Dashboard from "./pages/Dashboard";
@@ -36,8 +34,6 @@ const routes = [
       { path: "exams/:id", element: <ExamPage /> },
       { path: "calender", element: <CalenderPage /> },
       { path: "tasks", element: <TasksPage /> },
-      { path: "exam-info", element: <ExamInput /> },
-      { path: "exam-plan", element: <ExamPlan /> },
     ],
   },
 ];
