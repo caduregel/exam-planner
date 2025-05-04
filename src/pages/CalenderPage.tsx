@@ -1,11 +1,11 @@
-function Dashboard() {
+function CalenderPage() {
     return (
         <>
             <div className="flex flex-col md:items-start gap-5 items-center" >
-                <p>dashboard page</p>
+                <p>Calender page</p>
             </div>
         </>
     )
 }
 
-export default Dashboard
+export default CalenderPage

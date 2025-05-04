@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import routes from './routes.tsx';
-import { AuthProvider } from './pages/AuthProvider.tsx';
+import { AuthProvider } from './components/AuthProvider.tsx';
 
 const router = createBrowserRouter(routes);
 

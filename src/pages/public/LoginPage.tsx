@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeClosed } from "lucide-react"
-import { FaGoogle } from "react-icons/fa";
+// import { FaGoogle, FaApple } from "react-icons/fa";
 import { useState } from "react"
-import { FaApple } from "react-icons/fa";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import { useNavigate } from "react-router";
 
 async function handleLogin(email: string, password: string) {
@@ -38,7 +37,7 @@ function LoginPage() {
         handleLogin(email, password).then(() => {
             console.log("success!")
             navigate("/home/dashboard")
-        }).catch((e)=>{
+        }).catch((e) => {
             console.log(e)
         })
     }
@@ -65,7 +64,7 @@ function LoginPage() {
             </div>
 
             <Button className="w-full hover:cursor-pointer" onClick={signInWithEmail}>Log in with email</Button>
-
+            {/*
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
@@ -79,7 +78,7 @@ function LoginPage() {
             <div className="flex flex-col w-full justify-center gap-2">
                 <Button className="w-full hover:cursor-pointer" variant="outline"><FaApple /> Apple</Button>
                 <Button className="w-full hover:cursor-pointer" variant="outline"><FaGoogle /> Google</Button>
-            </div>
+            </div>*/}
         </div>
     )
 }
