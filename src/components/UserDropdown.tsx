@@ -12,6 +12,12 @@ import { IProfile } from "@/interfaces/IProfile"
 import { getUserProfile } from "@/util/api"
 import { useAuth } from "./providers/AuthProvider"
 import { User } from "lucide-react"
+import { supabase } from "@/lib/supabaseClient"
+
+async function signOut() {
+    const { error } = await supabase.auth.signOut()
+    if (error) return error
+}
 
 export function UserDropdown() {
     const { session } = useAuth()
@@ -36,7 +42,7 @@ export function UserDropdown() {
     }, [session])
 
     const handleLogout = () => {
-
+        signOut()
     }
 
     if (loading) return <p>Loading..</p>
