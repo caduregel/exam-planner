@@ -16,9 +16,8 @@ export async function getUserProfile() {
 }
 
 // Update user profile
-export async function updateUserProfile(updates: { full_name?: string; avatar_url?: string }) {
+export async function updateUserProfile(updates: { username?: string; avatar_url?: string }) {
     const { data: { user } } = await supabase.auth.getUser();
-
     const { data, error } = await supabase
         .from('profiles')
         .update(updates)
@@ -43,7 +42,7 @@ export async function getExams() {
 }
 
 // Add a new exam
-export async function addExam(exam: { name: string; date: string }) {
+export async function addExam(exam: { title: string; exam_date: string }) {
     const { data: { user } } = await supabase.auth.getUser();
 
     const { data, error } = await supabase
@@ -85,4 +84,14 @@ export async function deleteTask(taskId: string) {
         .eq('id', taskId);
 
     if (error) throw error;
+}
+
+export async function addProfilePicture(image: File, userId: string) {
+    const { error } = await supabase.storage
+        .from('avatars')
+        .upload(`${userId}/${image.name}`, image, {
+            cacheControl: '3600',
+            upsert: true,
+        });
+    if (error) throw error
 }

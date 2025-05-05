@@ -11,6 +11,7 @@ import ExamsPage from "./pages/ExamsPage";
 import TasksPage from "./util/TasksPage";
 import CalendarPage from "./pages/CalendarPage";
 import ExamPage from "./pages/ExamPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const routes = [
   {
@@ -34,6 +35,7 @@ const routes = [
       { path: "exams/:id", element: <ExamPage /> },
       { path: "calendar", element: <CalendarPage /> },
       { path: "tasks", element: <TasksPage /> },
+      { path: "profile", element: <ProfilePage /> },
     ],
   },
 ];
