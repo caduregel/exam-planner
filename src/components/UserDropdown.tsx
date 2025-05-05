@@ -11,6 +11,7 @@ import { User } from "lucide-react"
 import { supabase } from "@/lib/supabaseClient"
 import { Link } from "react-router"
 import useProfile from "@/hooks/use-profile"
+import { UserDropdownSkeleton } from "./skeletons/UserDropdownSkeleton"
 
 async function signOut() {
     const { error } = await supabase.auth.signOut()
@@ -24,13 +25,15 @@ export function UserDropdown() {
         signOut()
     }
 
-    if (loading) return <p>Loading..</p>
+    if (loading) return <UserDropdownSkeleton />
 
     if (!profile) {
         return (
             <p>No profile found</p>
         )
     }
+
+    // return <UserDropdownSkeleton />
 
     return (
         <DropdownMenu>

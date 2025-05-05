@@ -89,7 +89,7 @@ export async function deleteTask(taskId: string) {
 export async function addProfilePicture(image: File, userId: string) {
     const { error } = await supabase.storage
         .from('avatars')
-        .upload(`${userId}/${image.name}`, image, {
+        .upload(`${userId}/avatar`, image, {
             cacheControl: '3600',
             upsert: true,
         });

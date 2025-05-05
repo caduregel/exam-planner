@@ -1,3 +1,4 @@
+import { ProfilePageSkeleton } from "@/components/skeletons/ProfilePageSkeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -30,15 +31,6 @@ function ProfilePage() {
         }
     }, [nameUpdateSucces]);
 
-    if (loading) return (
-        <>
-            <div className="flex flex-col md:items-start gap-5 items-center p-5" >
-                <h1 className="text-4xl">Profile Settings</h1>
-            </div>
-        </>
-    )
-
-
     const handleFileClick = () => {
         fileInputRef.current?.click()
     }
@@ -50,15 +42,15 @@ function ProfilePage() {
                 const { data: { user }, error: userError } = await supabase.auth.getUser();
                 if (userError || !user) throw new Error('User not authenticated');
                 await addProfilePicture(image, user.id);
-    
+
                 const { data } = await supabase.storage
                     .from('avatars')
-                    .getPublicUrl(`${user.id}/${image.name}`);
-    
+                    .getPublicUrl(`${user.id}/avatar`);
+
                 const avatarURL = data.publicUrl;
-    
+
                 await updateUserProfile({ username: profile?.username, avatar_url: avatarURL });
-    
+
                 // ✅ update local profile
                 setProfile((prev) => ({
                     ...prev!,
@@ -79,6 +71,10 @@ function ProfilePage() {
             setNameUpdateSucces(true)
         }
     }
+
+    if (loading) return <ProfilePageSkeleton />
+
+    if (!profile) return <h1 className="p-5 text-2xl">No profile found</h1>
 
     return (
         <>
