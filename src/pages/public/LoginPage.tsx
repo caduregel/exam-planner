@@ -7,6 +7,8 @@ import { useState } from "react"
 import { supabase } from "../../lib/supabaseClient";
 import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "@/components/providers/AuthProvider"
+import { AuthError } from "@supabase/supabase-js"
+
 
 async function handleLogin(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -26,6 +28,8 @@ function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const [error, setError] = useState<string>()
+
     const [showPassword, setShowPassword] = useState(false)
 
     const navigate = useNavigate();
@@ -38,8 +42,8 @@ function LoginPage() {
         handleLogin(email, password).then(() => {
             console.log("success!")
             navigate("/home")
-        }).catch((e) => {
-            console.log(e)
+        }).catch((e: AuthError) => {
+            setError(e.message)
         })
     }
 
@@ -69,6 +73,12 @@ function LoginPage() {
             </div>
 
             <Button className="w-full hover:cursor-pointer" onClick={signInWithEmail}>Log in with email</Button>
+            
+            {error && error.length > 0 &&
+                <p className="text-red-500 text-sm">
+                    {error}
+                </p>
+            }
             {/*
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
