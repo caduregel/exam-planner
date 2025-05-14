@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import useProfile from "@/hooks/use-profile"
 import { supabase } from "@/lib/supabaseClient"
-import { addProfilePicture, updateUserProfile } from "@/util/api"
+import { addProfilePicture, updateUserProfile } from "@/util/api/Put/PutUserProfiles"
 import { Label } from "@radix-ui/react-dropdown-menu"
 import { CheckCircle } from "lucide-react"
 import { useEffect, useRef, useState } from "react"

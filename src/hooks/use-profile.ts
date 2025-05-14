@@ -1,6 +1,6 @@
 import { useAuth } from "@/components/providers/AuthProvider";
 import { IProfile } from "@/interfaces/IProfile";
-import { getUserProfile } from "@/util/api";
+import { getUserProfile } from "@/util/api/Get/GetUserProfiles";
 import { useEffect, useState } from "react";
 
 function useProfile() {

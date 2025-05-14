@@ -1,12 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ITask } from "@/interfaces/ITask"
-import { getTasks } from "@/util/api"
-import { useEffect, useState } from "react"
+import { getTasks } from "@/util/api/Get/GetTasks"
+import { useEffect, useRef, useState } from "react"
+import { Checkbox } from "../ui/checkbox"
+import { Label } from "../ui/label"
+import { updateTaskStatus } from "@/util/api/Put/PutTasks"
 
 function TodaysTasks() {
     const [tasks, setTasks] = useState<ITask[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<boolean>(false)
+
+    const debounceTimers = useRef<{ [key: number]: NodeJS.Timeout }>({})
+
+    const handleStatusChange = (taskId: number, checked: boolean) => {
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === taskId ? { ...task, status: checked } : task
+            )
+        )
+        // Debounce API call
+        if (debounceTimers.current[taskId]) {
+            clearTimeout(debounceTimers.current[taskId])
+        }
+        debounceTimers.current[taskId] = setTimeout(() => {
+            updateTaskStatus(taskId, checked).catch((err) => {
+                // Optionally handle error, e.g., revert UI
+                console.error("Failed to update status", err)
+            })
+        }, 500)
+    }
 
     useEffect(() => {
         getTasks()
@@ -32,7 +55,7 @@ function TodaysTasks() {
     }, [])
 
     return (
-        <Card className="w-full md:w-1/2">
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle className="">
                     Todays Tasks
@@ -46,13 +69,20 @@ function TodaysTasks() {
                 ) : tasks.length === 0 ? (
                     <p>No tasks for today</p>
                 ) : (
-                    <ul className="list-disc pl-5">
+                    <div>
                         {tasks.map((task) => (
-                            <li key={task.id} className="py-1">
-                                {task.title}
-                            </li>
+                            <div key={task.id} className="flex items-center space-x-2">
+                                <Checkbox className="hover:cursor-pointer"
+                                    checked={task.status}
+                                    onCheckedChange={(checked: boolean) =>
+                                        handleStatusChange(task.id, checked)
+                                    } />
+                                <Label>
+                                    {task.title}
+                                </Label>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 )}
             </CardContent>
         </Card>

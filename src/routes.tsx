@@ -8,7 +8,7 @@ import HomeLayout from "./HomeLayout";
 import SignupPage from "./pages/public/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import ExamsPage from "./pages/ExamsPage";
-import TasksPage from "./util/TasksPage";
+import TasksPage from "./pages/TasksPage";
 import CalendarPage from "./pages/CalendarPage";
 import ExamPage from "./pages/ExamPage";
 import ProfilePage from "./pages/ProfilePage";

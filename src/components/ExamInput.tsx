@@ -13,20 +13,26 @@ import React, { useEffect, useState } from "react"
 import { IExamInfo } from "@/interfaces/IExamInfo"
 import { validateDate } from "@/util/dateHandlings"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { SpreadType } from "@/util/dateToDoMatcher"
+import { dateToDoMatcherFlat, getDates, SpreadType } from "@/util/dateToDoMatcher"
+import { supabase } from "@/lib/supabaseClient"
+import { useAuth } from "./providers/AuthProvider"
 
 interface IExamInputProps {
-    examInfo: IExamInfo
-    setExamInfo: (examInfo: IExamInfo) => void;
-    handleExamAdd: () => void;
-    setTaskSpread: (newTaskSpread: SpreadType)=>void;
-    taskSpread: SpreadType;
+    setExamUpdateSuccess: (value: boolean) => void;
 }
 
-function ExampInput({ examInfo, setExamInfo, handleExamAdd, setTaskSpread, taskSpread }: IExamInputProps) {
-    const [subject, setSubject] = useState<string>(examInfo.title)
-    const [date, setDate] = useState<Date>(new Date(examInfo.date))
-    const [toDos, setToDos] = useState<string[]>([...examInfo.toDo])
+function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
+    const [subject, setSubject] = useState<string>("")
+    const [date, setDate] = useState<Date>(new Date)
+    const [toDos, setToDos] = useState<string[]>([""])
+    const [taskSpread, setTaskSpread] = useState<SpreadType>("even")
+
+
+    const [newExamInfo, setNewExamInfo] = useState<IExamInfo>({
+        title: subject,
+        date: date,
+        toDo: toDos,
+    })
 
     const spreadOptions = [
         { value: "even", label: "Even Spread" },
@@ -38,18 +44,69 @@ function ExampInput({ examInfo, setExamInfo, handleExamAdd, setTaskSpread, taskS
     const [filledStatus, setFilledStatus] = useState<boolean>(false)
 
     useEffect(() => {
-        const newExamIno = {
+        const updatedExamInfo = {
             title: subject,
             date: date,
             toDo: toDos
         }
-        setExamInfo(newExamIno)
+        setNewExamInfo(updatedExamInfo)
         if (subject !== "" && validateDate(date) && toDos.length !== 0) {
             setFilledStatus(true)
         } else setFilledStatus(false)
     }, [
         subject, date, toDos
     ])
+
+    const { session } = useAuth()
+
+    const userID = session?.user.id
+
+    const handleExamAdd = async () => {
+        const { title, date, toDo } = newExamInfo;
+
+        // Insert exam
+        const { data: examData, error: examError } = await supabase
+            .from('exams')
+            .insert({ title, exam_date: date, user_id: userID })
+            .select()
+            .single();
+
+        if (examError) {
+            console.error("Failed to insert exam:", examError);
+            return;
+        }
+
+        const examId = examData.id;
+
+        // Generate date range (today to day before exam)
+        const today = new Date();
+        const dayBeforeExam = new Date(date);
+        dayBeforeExam.setDate(dayBeforeExam.getDate() - 1);
+
+        const dateRange = getDates(today, dayBeforeExam);
+        const tasks = dateToDoMatcherFlat(dateRange, toDo, taskSpread);
+
+        // Prepare tasks array for Supabase
+        const tasksPayload = tasks.map(task => ({
+            exam_id: examId,
+            title: task.title,
+            due_date: task.due_date.toISOString().split('T')[0], // format as 'YYYY-MM-DD'
+            status: false,
+        }));
+
+        // Insert tasks in bulk
+        const { error: tasksError } = await supabase
+            .from('tasks')
+            .insert(tasksPayload);
+
+        if (tasksError) {
+            console.error("Failed to insert tasks:", tasksError);
+            return;
+        }
+
+        console.log("Exam and tasks successfully inserted");
+        setExamUpdateSuccess(true);
+    }
 
     const handleToDoChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         let newTodo: string[] = [...toDos];
@@ -78,7 +135,7 @@ function ExampInput({ examInfo, setExamInfo, handleExamAdd, setTaskSpread, taskS
                     <Input placeholder="E.g Bio Nervous System" value={subject} onChange={(e) => { setSubject(e.target.value) }} />
 
                     <Label className="m-2">To Do</Label>
-                    {examInfo.toDo.map((item, index) => (
+                    {newExamInfo.toDo.map((item, index) => (
                         <div className="flex flex-row items-center space-x-2" key={index}>
                             <Button variant="outline" className="hover:cursor-pointer" onClick={() => { handleToDoDelete(index) }}>X</Button>
                             <Input key={index} placeholder={`E.g Revise Chapter ${index + 1}`} value={item} onChange={(e) => { handleToDoChange(e, index) }} />
