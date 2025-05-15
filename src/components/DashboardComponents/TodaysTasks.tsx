@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
 import { updateTaskStatus } from "@/util/api/Put/PutTasks"
+import { mutate } from "swr"
+import TaskSkeleton from "../skeletons/TaskSkeleton"
 
 function TodaysTasks() {
     const [tasks, setTasks] = useState<ITask[]>([])
@@ -23,11 +25,17 @@ function TodaysTasks() {
         if (debounceTimers.current[taskId]) {
             clearTimeout(debounceTimers.current[taskId])
         }
-        debounceTimers.current[taskId] = setTimeout(() => {
-            updateTaskStatus(taskId, checked).catch((err) => {
-                // Optionally handle error, e.g., revert UI
-                console.error("Failed to update status", err)
-            })
+        debounceTimers.current[taskId] = setTimeout(async () => {
+            const updatedTask: ITask = await updateTaskStatus(taskId, checked)
+            console.log("Updated task:", updatedTask)
+
+            // Optimistically update the SWR cache for the exam's tasks
+            mutate(`exams/${updatedTask.exam_id}/tasks`, (tasks?: ITask[]) => {
+                if (!tasks) return [] // fallback, shouldn't happen
+                return tasks.map(task =>
+                    task.id === updatedTask.id ? updatedTask : task
+                )
+            }, false)
         }, 500)
     }
 
@@ -44,7 +52,6 @@ function TodaysTasks() {
 
                 setLoading(false)
                 setError(false)
-                console.log("Tasks fetched successfully:", data)
             }
             )
             .catch((error) => {
@@ -63,13 +70,17 @@ function TodaysTasks() {
             </CardHeader>
             <CardContent>
                 {loading ? (
-                    <p>Loading...</p>
+                    <div className="flex flex-col space-y-2">
+                        <TaskSkeleton />
+                        <TaskSkeleton />
+                        <TaskSkeleton />
+                    </div>
                 ) : error ? (
                     <p>Error fetching tasks</p>
                 ) : tasks.length === 0 ? (
                     <p>No tasks for today</p>
                 ) : (
-                    <div className="flex flex-col space-y-2"> 
+                    <div className="flex flex-col space-y-2">
                         {tasks.map((task) => (
                             <div key={task.id} className="flex items-center space-x-2">
                                 <Checkbox className="hover:cursor-pointer"

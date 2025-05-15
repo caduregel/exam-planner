@@ -20,7 +20,12 @@ function Dashboard() {
 
     return (
         <>
-            <h1 className="text-2xl md:text-4xl md:p-4 p-2 font-bold">Dashboard</h1>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between md:p-4 p-2">
+                <h1 className="text-2xl md:text-4xl font-bold">Dashboard</h1>
+                <span className="text-md md:text-lg text-gray-500 dark:text-gray-300 mt-2 md:mt-0">
+                    {new Date().toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+                </span>
+            </div>
             <div className="flex flex-col md:grid grid-cols-4 gap-5 items-center md:items-start p-2 md:p-4" >
                 <div className="col-start-1 col-end-4 flex flex-col gap-5">
                     <TodaysTasks />

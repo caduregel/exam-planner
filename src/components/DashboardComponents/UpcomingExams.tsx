@@ -3,11 +3,13 @@ import { getExams } from "@/util/api/Get/GetExams"
 import { IExamInfo } from "@/interfaces/IExamInfo"
 import ExamCard from "../ExamCard"
 import useSWR from "swr"
+import ExamCardSkeleton from "../skeletons/ExamCardSkeleton"
+
+
 
 function UpcomingExams() {
     const { data: exams, error, isLoading } = useSWR<IExamInfo[]>("exams", () => getExams())
 
-    if (exams){
         return (
             <Card className="w-full">
                 <CardHeader>
@@ -17,23 +19,29 @@ function UpcomingExams() {
                 </CardHeader>
                 <CardContent >
                     {isLoading ? (
-                        <p>Loading...</p>
+                        <div>
+                            <ExamCardSkeleton />
+                            <ExamCardSkeleton />
+                        </div>
                     ) : error ? (
                         <p>Error fetching exams</p>
-                    ) : exams.length === 0 ? (
+                    ) : exams &&  exams.length === 0 ? (
                         <p>No upcoming exams</p>
-                    ) : (
+                    ) : exams &&  (
                         <div>
-                            {exams.map((exam) => (
-                                <div key={exam.id} className="flex items-center space-x-2 hover:scale-103 transition-transform duration-200">
-                                    <ExamCard exam={exam} />
-                                </div>
-                            ))}
+                            {exams
+                                .slice()
+                                .sort((a, b) => new Date(a.exam_date).getTime() - new Date(b.exam_date).getTime())
+                                .map((exam) => (
+                                    <div key={exam.id} className="flex items-center space-x-2 hover:scale-103 transition-transform duration-200">
+                                        <ExamCard exam={exam} />
+                                    </div>
+                                ))}
                         </div>
                     )}
                 </CardContent>
             </Card>
         );
     }
-}
+
 export default UpcomingExams;

@@ -5,6 +5,8 @@ export async function updateTaskStatus(taskId: number, status: boolean) {
         .from("tasks")
         .update({ status })
         .eq("id", taskId)
+        .select()
+        .single()
     if (error) throw error
     return data
 }
