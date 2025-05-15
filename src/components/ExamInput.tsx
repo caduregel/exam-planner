@@ -132,12 +132,12 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
                             value={taskSpread}
                             onValueChange={(value) => setTaskSpread(value as SpreadType)}
                         >
-                            <SelectTrigger className="w-[180px]">
+                            <SelectTrigger className="w-[180px] hover:cursor-pointer">
                                 <SelectValue placeholder="Select spread" />
                             </SelectTrigger>
                             <SelectContent>
                                 {spreadOptions.map((opt) => (
-                                    <SelectItem key={opt.value} value={opt.value}>
+                                    <SelectItem key={opt.value} value={opt.value} className="hover:cursor-pointer">
                                         {opt.label}
                                     </SelectItem>
                                 ))}

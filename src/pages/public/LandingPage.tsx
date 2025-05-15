@@ -4,7 +4,7 @@ import { Link } from "react-router"
 function LandingPage() {
     return (
         <div className="flex flex-col gap-10 px-10 md:w-[80vw]">
-            <div className="md:flex flex-row justify-between">
+            <div className="md:flex flex-row justify-between py-20">
                 <div className="flex flex-col gap-5">
                     <h1 className="text-5xl font-semibold">The right way to prepare</h1>
                     <p className="text-xl">Plan. Study. Achieve. With some help from AI.</p>
