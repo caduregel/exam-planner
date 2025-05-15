@@ -10,15 +10,20 @@ import { Label } from "./ui/label"
 import { Button } from "./ui/button"
 import { Calendar } from "./ui/calendar"
 import React, { useEffect, useState } from "react"
-import { IExamInfo } from "@/interfaces/IExamInfo"
 import { validateDate } from "@/util/dateHandlings"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { dateToDoMatcherFlat, getDates, SpreadType } from "@/util/dateToDoMatcher"
-import { supabase } from "@/lib/supabaseClient"
+import { SpreadType } from "@/util/dateToDoMatcher"
 import { useAuth } from "./providers/AuthProvider"
+import { handleExamAdd } from "@/util/api/Post/PostExams"
 
 interface IExamInputProps {
     setExamUpdateSuccess: (value: boolean) => void;
+}
+
+export interface IExamInputState {
+    title: string;
+    date: Date;
+    toDo: string[];
 }
 
 function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
@@ -28,7 +33,7 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
     const [taskSpread, setTaskSpread] = useState<SpreadType>("even")
 
 
-    const [newExamInfo, setNewExamInfo] = useState<IExamInfo>({
+    const [newExamInfo, setNewExamInfo] = useState<IExamInputState>({
         title: subject,
         date: date,
         toDo: toDos,
@@ -61,51 +66,19 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
 
     const userID = session?.user.id
 
-    const handleExamAdd = async () => {
-        const { title, date, toDo } = newExamInfo;
+    const handleSubmission = () => {
+        if (!userID) return;
 
-        // Insert exam
-        const { data: examData, error: examError } = await supabase
-            .from('exams')
-            .insert({ title, exam_date: date, user_id: userID })
-            .select()
-            .single();
-
-        if (examError) {
-            console.error("Failed to insert exam:", examError);
-            return;
-        }
-
-        const examId = examData.id;
-
-        // Generate date range (today to day before exam)
-        const today = new Date();
-        const dayBeforeExam = new Date(date);
-        dayBeforeExam.setDate(dayBeforeExam.getDate() - 1);
-
-        const dateRange = getDates(today, dayBeforeExam);
-        const tasks = dateToDoMatcherFlat(dateRange, toDo, taskSpread);
-
-        // Prepare tasks array for Supabase
-        const tasksPayload = tasks.map(task => ({
-            exam_id: examId,
-            title: task.title,
-            due_date: task.due_date.toISOString().split('T')[0], // format as 'YYYY-MM-DD'
-            status: false,
-        }));
-
-        // Insert tasks in bulk
-        const { error: tasksError } = await supabase
-            .from('tasks')
-            .insert(tasksPayload);
-
-        if (tasksError) {
-            console.error("Failed to insert tasks:", tasksError);
-            return;
-        }
-
-        console.log("Exam and tasks successfully inserted");
-        setExamUpdateSuccess(true);
+        handleExamAdd(newExamInfo, taskSpread, userID)
+            .then(() => {
+                setExamUpdateSuccess(true);
+                setSubject("");
+                setDate(new Date());
+                setToDos([""]);
+            })
+            .catch((error) => {
+                console.error("Error adding exam:", error);
+            });
     }
 
     const handleToDoChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -172,7 +145,7 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
                         </Select>
                     </div>
 
-                    {/* Optional: Show description below select */}
+                    {/* Show description below select */}
                     <p className="text-sm text-muted-foreground">
                         {taskSpread === "even" && "Tasks spread evenly between now and the exam."}
                         {taskSpread === "start" && "More tasks now, less as the exam approaches."}
@@ -183,7 +156,7 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
                 </CardContent>
                 <CardFooter>
                     {filledStatus ?
-                        <Button variant="outline" className="hover:cursor-pointer" onClick={handleExamAdd}> Make a study plan</Button>
+                        <Button variant="outline" className="hover:cursor-pointer" onClick={handleSubmission}> Make a study plan</Button>
                         : <Button variant="outline" disabled>Generate a study plan</Button>
                     }
                 </CardFooter>

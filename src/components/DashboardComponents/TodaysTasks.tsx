@@ -69,7 +69,7 @@ function TodaysTasks() {
                 ) : tasks.length === 0 ? (
                     <p>No tasks for today</p>
                 ) : (
-                    <div>
+                    <div className="flex flex-col space-y-2"> 
                         {tasks.map((task) => (
                             <div key={task.id} className="flex items-center space-x-2">
                                 <Checkbox className="hover:cursor-pointer"

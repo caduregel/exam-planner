@@ -1,5 +1,7 @@
 export interface IExamInfo {
-    title: string
-    date: Date
-    toDo: string[]
+    id: number;
+    exam_date: Date;
+    created_at: Date;
+    user_id: string;
+    title: string;
 }

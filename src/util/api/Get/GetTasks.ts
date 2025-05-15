@@ -22,7 +22,7 @@ export async function getTasks() {
 
 
 // Fetch tasks for a specific exam
-export async function getTasksForExam(examId: string) {
+export async function getTasksForExam(examId: number) {
     const { data, error } = await supabase
         .from('tasks')
         .select('*')
