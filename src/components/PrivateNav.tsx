@@ -1,8 +1,15 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import { Link } from "react-router";
 import { CalendarRange, LayoutDashboard, ListCheck, NotebookPen } from "lucide-react";
 
 function PrivateNav() {
+    const { setOpenMobile, isMobile } = useSidebar();
+
+    const handleNavigation = () => {
+        if (isMobile) {
+            setOpenMobile(false);
+        }
+    };
 
     return (
         <>
@@ -17,7 +24,7 @@ function PrivateNav() {
                     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="/home/">
+                                <Link to="/home/" onClick={handleNavigation}>
                                     <LayoutDashboard />
                                     <p className="text-lg">
                                         Dasboard
@@ -27,7 +34,7 @@ function PrivateNav() {
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="/home/calendar">
+                                <Link to="/home/calendar" onClick={handleNavigation}>
                                     <CalendarRange />
                                     <p className="text-lg">
                                         Calendar
@@ -38,7 +45,7 @@ function PrivateNav() {
 
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="/home/exams">
+                                <Link to="/home/exams" onClick={handleNavigation}>
                                     <NotebookPen />
                                     <p className="text-lg">
                                         Exams
@@ -49,7 +56,7 @@ function PrivateNav() {
 
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link to="/home/tasks">
+                                <Link to="/home/tasks" onClick={handleNavigation}>
                                     <ListCheck />
                                     <p className="text-lg">
                                         Tasks
