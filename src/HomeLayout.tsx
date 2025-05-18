@@ -7,6 +7,7 @@ import { DynamicBreadCrumbs } from './components/DynamicBreadCrumbs'
 
 import { UserDropdown } from './components/UserDropdown'
 import { ThemeSwitcher } from './components/ThemeSwitcher'
+import { Toaster } from 'sonner'
 
 function HomeLayout() {
 
@@ -17,7 +18,7 @@ function HomeLayout() {
         <div className="flex flex-col items-center justify-center min-h-svh">
           <SidebarProvider>
             <PrivateNav />
-            <main className='p-2 w-full'>
+            <main className='p-2 w-full min-h-screen flex flex-col'>
               <div className='flex items-center gap-2 justify-between'>
                 <div className='flex items-center'>
                   <SidebarTrigger className='hover:cursor-pointer' />
@@ -25,11 +26,12 @@ function HomeLayout() {
                   <DynamicBreadCrumbs />
                 </div>
                 <div className='flex items-center gap-2'>
-                <ThemeSwitcher />
-                <UserDropdown />
+                  <ThemeSwitcher />
+                  <UserDropdown />
                 </div>
               </div>
               <Outlet />
+              <Toaster />
             </main>
           </SidebarProvider>
         </div>

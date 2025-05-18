@@ -20,7 +20,6 @@ export async function getTasks() {
     return data;
 }
 
-
 // Fetch tasks for a specific exam
 export async function getTasksForExam(examId: number) {
     const { data, error } = await supabase

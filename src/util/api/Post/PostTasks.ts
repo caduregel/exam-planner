@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabaseClient";
 
 // Add task to an exam
-export async function addTask(task: { title: string; exam_id: string; due_date: string }) {
+export async function addTask(task: { title: string; exam_id: number; due_date: string }) {
     const { data, error } = await supabase
         .from('tasks')
         .insert([task])
