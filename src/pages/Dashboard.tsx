@@ -4,6 +4,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import UpcomingExams from "@/components/DashboardComponents/UpcomingExams";
+import TasksDistributionGraph from "@/components/ExamPageComponents/TasksDistributionGraph";
+import TasksQuickStats from "@/components/TasksQuickStats";
 
 
 function Dashboard() {
@@ -26,12 +28,16 @@ function Dashboard() {
                     {new Date().toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
                 </span>
             </div>
-            <div className="flex flex-col md:grid grid-cols-4 gap-5 items-center md:items-start p-2 md:p-4" >
-                <div className="col-start-1 col-end-4 flex flex-col gap-5 w-full">
-                    <TodaysTasks />
+            <div className="flex flex-col md:grid grid-cols-10 gap-5 items-center md:items-start p-2 md:p-4" >
+                <div className="col-start-1 col-end-8 flex flex-col gap-5 w-full">
+                    <div className="flex flex-col md:flex-row h-full gap-5">
+                        <TodaysTasks />
+                        <TasksDistributionGraph />
+                    </div>
                     <UpcomingExams />
                 </div>
-                <div className="col-start-4 col-end-5 row-start-1 w-full">
+                <div className="col-start-8 col-end-11 row-start-1 w-full flex flex-col gap-5">
+                    <TasksQuickStats />
                     <ExampInput setExamUpdateSuccess={setExamUpdateSuccess} />
                 </div>
                 {examAddSuccess && (

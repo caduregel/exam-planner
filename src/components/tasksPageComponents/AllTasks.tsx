@@ -109,7 +109,7 @@ function AllTasks() {
                 <Separator className="w-full" />
                 {isLoading && <TasksSkeleton count={5} />}
                 {tasks && tasks.length > 0 && tasks.map((task) => {
-                    return <TaskCard key={task.id} task={task} onDelete={handleDelete} onUpdate={() => { console.log("snlfaf") }} />
+                    return <TaskCard key={task.id} task={task} onDelete={handleDelete} />
                 })}
             </CardContent>
         </Card>

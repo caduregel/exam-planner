@@ -14,10 +14,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 interface InlineTaskItemProps {
     task: ITask
     onDelete: (id: number) => void
-    onUpdate: (newTask: ITask) => void
+    examNav?: boolean;
 }
 
-export function TaskCard({ task, onDelete }: InlineTaskItemProps) {
+export function TaskCard({ task, onDelete, examNav = true }: InlineTaskItemProps) {
     const [status, setStatus] = useState(task.status)
 
     const debounceTimers = useRef<{ [key: number]: NodeJS.Timeout }>({})
@@ -77,19 +77,22 @@ export function TaskCard({ task, onDelete }: InlineTaskItemProps) {
                     >
                         <Trash2 className="w-4 h-4 text-destructive" />
                     </Button>
-
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger className="flex items-center">
-                                <Link to={`/home/exams/${task.exam_id}`}>
-                                    <SquareArrowOutUpRight className="w-4 h-4" />
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>Go to exam page for this task</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    {
+                        examNav && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger className="flex items-center">
+                                        <Link to={`/home/exams/${task.exam_id}`}>
+                                            <SquareArrowOutUpRight className="w-4 h-4" />
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Go to exam page for this task</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )
+                    }
                 </div>
             </CardContent>
         </Card>

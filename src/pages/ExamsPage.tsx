@@ -5,10 +5,7 @@ import { CheckCircle } from "lucide-react"
 import UpcomingExams from "@/components/DashboardComponents/UpcomingExams"
 
 function ExamsPage() {
-
     const [examAddSuccess, setExamUpdateSuccess] = useState<boolean>(false)
-
-
 
     useEffect(() => {
         if (examAddSuccess) {

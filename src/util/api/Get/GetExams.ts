@@ -12,3 +12,16 @@ export async function getExams() {
     if (error) throw error;
     return data;
 }
+
+
+// Fetch exam by id
+export async function getExamById(id: number) {
+    const { data, error } = await supabase
+        .from('exams')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error) throw error;
+    return data;
+}
