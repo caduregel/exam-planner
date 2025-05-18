@@ -8,7 +8,7 @@ import ExamFilterDropdown from "../ExamFilterDropdown"
 import { ITask } from "@/interfaces/ITask"
 import useSWR, { mutate } from "swr"
 import { getTasks, getTasksForExam } from "@/util/api/Get/GetTasks"
-import { TaskCard } from "./taskCardComponents/TaskCard"
+import { TaskCard } from "./TaskCard"
 import { deleteTask } from "@/util/api/Delete/DeleteTasks"
 import { toast } from "sonner"
 import { addTask } from "@/util/api/Post/PostTasks"
@@ -26,7 +26,7 @@ function AllTasks() {
     // Sort tasks by due_date based on ascending state
     const normalize = (str: string) => str.replace(/\s+/g, "").toLowerCase()
 
-    const tasks = tasksRaw
+    const tasks = tasksRaw  
         ? tasksRaw
             .filter(task =>
                 search.trim() === ""
@@ -113,7 +113,6 @@ function AllTasks() {
                 })}
             </CardContent>
         </Card>
-
     )
 }
 

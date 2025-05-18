@@ -63,7 +63,7 @@ export function TaskCard({ task, onDelete }: InlineTaskItemProps) {
                         {task.title}
                     </Label>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                        Due: {format(new Date(task.due_date), "PPP")}
+                        {format(new Date(task.due_date), "PPP")}
                     </p>
                 </div>
 
@@ -81,9 +81,9 @@ export function TaskCard({ task, onDelete }: InlineTaskItemProps) {
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger className="flex items-center">
-                                    <Link to={`/home/exams/${task.exam_id}`}>
-                                        <SquareArrowOutUpRight className="w-4 h-4" />
-                                    </Link>
+                                <Link to={`/home/exams/${task.exam_id}`}>
+                                    <SquareArrowOutUpRight className="w-4 h-4" />
+                                </Link>
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>Go to exam page for this task</p>

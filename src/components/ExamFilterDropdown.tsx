@@ -16,7 +16,7 @@ function ExamFilterDropdown({ currentExam, setCurrentExam }: ExamFilterDropdownP
 
     return (
         <Select value={currentExam} onValueChange={setCurrentExam}>
-            <SelectTrigger className="w-1/2 hover:cursor-pointer">
+            <SelectTrigger className="w-full hover:cursor-pointer">
                 <Filter />
                 <SelectValue placeholder="Filter by Exam" />
             </SelectTrigger>
