@@ -3,20 +3,23 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import useProfile from "@/hooks/use-profile"
 import { supabase } from "@/lib/supabaseClient"
+import { getUserProfile } from "@/util/api/Get/GetUserProfiles"
 import { addProfilePicture, updateUserProfile } from "@/util/api/Put/PutUserProfiles"
 import { Label } from "@radix-ui/react-dropdown-menu"
 import { CheckCircle } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
+import useSWR, { mutate } from "swr"
 
 function ProfilePage() {
-    const { profile, loading, setProfile } = useProfile()
+    // const { profile, loading, setProfile } = useProfile()
+    const { data: profile, isLoading } = useSWR("profile", () => getUserProfile())
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const [newUsername, setNewUsername] = useState("")
     const [nameUpdateSucces, setNameUpdateSucces] = useState<boolean>(false)
+    const [avatarKey, setAvatarKey] = useState(0) // Used to force image refresh
 
     useEffect(() => {
         if (profile) { setNewUsername(profile.username) }
@@ -40,22 +43,21 @@ function ProfilePage() {
             try {
                 const image = event.target.files[0]
                 const { data: { user }, error: userError } = await supabase.auth.getUser();
+                
                 if (userError || !user) throw new Error('User not authenticated');
                 await addProfilePicture(image, user.id);
-
+                
                 const { data } = await supabase.storage
-                    .from('avatars')
-                    .getPublicUrl(`${user.id}/avatar`);
-
-                const avatarURL = data.publicUrl;
-
+                .from('avatars')
+                .getPublicUrl(`${user.id}/avatar`);
+                
+                // Add a cache-busting query param to force image refresh
+                const avatarURL = `${data.publicUrl}?t=${Date.now()}`;
+                
                 await updateUserProfile({ username: profile?.username, avatar_url: avatarURL });
-
-                // ✅ update local profile
-                setProfile((prev) => ({
-                    ...prev!,
-                    avatar_url: avatarURL,
-                }));
+                
+                mutate("profile");
+                setAvatarKey(prev => prev + 1); // Force image re-render
             } catch (error) {
                 console.log(error);
             }
@@ -72,9 +74,14 @@ function ProfilePage() {
         }
     }
 
-    if (loading) return <ProfilePageSkeleton />
+    if (isLoading) return <ProfilePageSkeleton />
 
     if (!profile) return <h1 className="p-5 text-2xl">No profile found</h1>
+
+    // Add cache-busting param to avatar_url to force refresh
+    const avatarUrlWithCacheBust = profile?.avatar_url
+        ? `${profile.avatar_url}${profile.avatar_url.includes('?') ? '&' : '?'}cb=${avatarKey}`
+        : "https://cobrosgueehmzppfqlkp.supabase.co/storage/v1/object/public/avatars//placeholderProfilePic.jpg";
 
     return (
         <>
@@ -86,10 +93,12 @@ function ProfilePage() {
                             <CardTitle>Profile Picture</CardTitle>
                         </CardHeader>
                         <CardContent className="flex items-center flex-col gap-5">
-                            {profile?.avatar_url
-                                ? <img src={profile?.avatar_url} className="size-40 rounded-full" />
-                                : <img src="https://cobrosgueehmzppfqlkp.supabase.co/storage/v1/object/public/avatars//placeholderProfilePic.jpg" className="size-40 rounded-full" />
-                            }
+                            <img
+                                key={avatarKey}
+                                src={avatarUrlWithCacheBust}
+                                className="size-40 rounded-full"
+                                alt="Profile"
+                            />
                             <p>JPG or PNG no larger than 5 MB</p>
                         </CardContent>
                         <CardFooter className="flex justify-center">

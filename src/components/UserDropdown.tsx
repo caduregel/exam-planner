@@ -10,8 +10,9 @@ import {
 import { User } from "lucide-react"
 import { supabase } from "@/lib/supabaseClient"
 import { Link } from "react-router"
-import useProfile from "@/hooks/use-profile"
 import { UserDropdownSkeleton } from "./skeletons/UserDropdownSkeleton"
+import useSWR from "swr"
+import { getUserProfile } from "@/util/api/Get/GetUserProfiles"
 
 async function signOut() {
     const { error } = await supabase.auth.signOut()
@@ -19,13 +20,13 @@ async function signOut() {
 }
 
 export function UserDropdown() {
-    const { profile, loading } = useProfile()
+    const { data: profile, isLoading } = useSWR("profile", () => getUserProfile())
 
     const handleLogout = () => {
         signOut()
     }
 
-    if (loading) return <UserDropdownSkeleton />
+    if (isLoading) return <UserDropdownSkeleton />
 
     if (!profile) {
         return (
