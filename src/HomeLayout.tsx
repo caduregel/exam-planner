@@ -19,7 +19,10 @@ function HomeLayout() {
           <SidebarProvider>
             <PrivateNav />
             <main className='p-2 w-full min-h-screen flex flex-col'>
-              <div className='flex items-center gap-2 justify-between'>
+              <div
+                className='flex items-center gap-2 justify-between sticky top-0 z-30 bg-background/80 backdrop-blur-md py-2'
+                style={{ WebkitBackdropFilter: 'blur(8px)' }}
+              >
                 <div className='flex items-center'>
                   <SidebarTrigger className='hover:cursor-pointer' />
                   <Separator orientation='vertical' />
