@@ -80,7 +80,7 @@ function ProfilePage() {
         <>
             <div className="flex flex-col md:items-start gap-5 items-center p-5" >
                 <h1 className="text-4xl">Profile Settings</h1>
-                <div className="flex w-full gap-5">
+                <div className="flex flex-col md:flex-row w-full gap-5">
                     <Card>
                         <CardHeader>
                             <CardTitle>Profile Picture</CardTitle>
