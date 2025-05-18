@@ -27,11 +27,11 @@ function Dashboard() {
                 </span>
             </div>
             <div className="flex flex-col md:grid grid-cols-4 gap-5 items-center md:items-start p-2 md:p-4" >
-                <div className="col-start-1 col-end-4 flex flex-col gap-5">
+                <div className="col-start-1 col-end-4 flex flex-col gap-5 w-full">
                     <TodaysTasks />
                     <UpcomingExams />
                 </div>
-                <div className="col-start-4 col-end-5 row-start-1">
+                <div className="col-start-4 col-end-5 row-start-1 w-full">
                     <ExampInput setExamUpdateSuccess={setExamUpdateSuccess} />
                 </div>
                 {examAddSuccess && (
