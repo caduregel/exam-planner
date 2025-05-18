@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import routes from './routes.tsx';
 import { AuthProvider } from './components/providers/AuthProvider.tsx';
 import { ThemeProvider } from './components/providers/ThemeProvider.tsx';
+import { Analytics } from "@vercel/analytics/next"
 
 const router = createBrowserRouter(routes);
 
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider>
       <AuthProvider>
         <RouterProvider router={router} />
+        <Analytics />
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>,
