@@ -41,7 +41,7 @@ function ExamPage() {
             }
 
             {/* Action buttons */}
-            <div className="flex gap-2 justify-end mx-5 mb-2">
+            <div className="flex flex-col gap-2 justify-end my-5 mx-5 mb-2 md:flex-row">
                 <Dialog open={addTaskOpen} onOpenChange={setAddTaskOpen}>
                     <DialogTrigger asChild>
                         <Button variant="default" className="hover:cursor-pointer"><Plus /> Add Task</Button>
@@ -68,13 +68,13 @@ function ExamPage() {
                 </Dialog>
             </div>
             
-            <div className="grid grid-cols-2 gap-5 m-2 mx-5">
-                <div className="grid-start-1 grid-end-2 flex flex-col gap-5">
-                    <TasksDistributionGraph exam_id={Number(id)} />
-                    <TasksQuickStats exam_id={Number(id)} />
-                </div>
+            <div className="flex flex-col md:grid grid-cols-2 gap-5 m-2 mx-5">
                 <div className="grid-stat-2 grid-end-3 flex flex-col gap-5">
                     <ExamPageTasks exam_id={Number(id)} />
+                </div>
+                <div className="grid-start-1 grid-end-2 flex flex-col gap-5">
+                    <TasksQuickStats exam_id={Number(id)} />
+                    <TasksDistributionGraph exam_id={Number(id)} />
                 </div>
             </div>
         </>

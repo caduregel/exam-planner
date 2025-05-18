@@ -65,14 +65,14 @@ function TasksDistributionGraph({ exam_id }: { exam_id?: number }) {
     if (tasksLoading) return <ChartSkeleton />
 
     return (
-        <Card className="h-fit">
+        <Card className="h-fit w-full">
             <CardHeader className="flex justify-between items-center">
                 <CardTitle>Task distribution</CardTitle>
                 <CardDescription>
                     Ammount of tasks per day
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-2 w-full">
+            <CardContent>
                 {tasksError && (
                     <div className="flex items-center justify-center h-full">
                         <p className="text-red-500">Error loading tasks</p>

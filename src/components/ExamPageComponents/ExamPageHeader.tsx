@@ -2,7 +2,7 @@ import { IExamInfo } from "@/interfaces/IExamInfo";
 
 function ExamPageHeader({ exam }: { exam: IExamInfo }) {
     return (
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between md:p-4 p-2">
+        <div className="flex flex-row items-center justify-between md:p-4- p-2">
             <h1 className="text-2xl md:text-4xl font-bold">{exam?.title}</h1>
             {exam?.exam_date && (
                 <div className="flex flex-col md:items-end">
