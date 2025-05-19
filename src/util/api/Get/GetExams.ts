@@ -25,3 +25,15 @@ export async function getExamById(id: number) {
     if (error) throw error;
     return data;
 }
+
+// Fetch exams color by id
+export async function getExamColorById(id: number) {
+    const { data, error } = await supabase
+        .from('exams')
+        .select('exam_color')
+        .eq('id', id)
+        .single();
+
+    if (error) throw error;
+    return data.exam_color;
+}

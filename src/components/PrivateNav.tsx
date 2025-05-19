@@ -21,7 +21,7 @@ function PrivateNav() {
                     </Link>
                 </SidebarHeader>
                 <SidebarContent>
-                    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+                    <SidebarGroup className="group-data-[collapsible=icon]:hidden list-none">
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
                                 <Link to="/home/" onClick={handleNavigation}>

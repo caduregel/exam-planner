@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
+import { mutate } from "swr";
 
 // Update user profile
 export async function updateUserProfile(updates: { username?: string; avatar_url?: string }) {
@@ -10,6 +11,7 @@ export async function updateUserProfile(updates: { username?: string; avatar_url
         .single();
 
     if (error) throw error;
+    mutate("profile")
     return data;
 }
 
@@ -21,4 +23,5 @@ export async function addProfilePicture(image: File, userId: string) {
             upsert: true,
         });
     if (error) throw error
+    mutate("profile")
 }

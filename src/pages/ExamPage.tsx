@@ -20,7 +20,7 @@ import { CalendarSync, Plus, SquarePen } from "lucide-react"
 function ExamPage() {
     const { id } = useParams()
     const { data: exam, error, isLoading } = useSWR<IExamInfo>(`exams/${id}`, () => getExamById(Number(id)))
-
+console.log(exam)
     // Dialog open states
     const [addTaskOpen, setAddTaskOpen] = useState(false)
     const [rescheduleOpen, setRescheduleOpen] = useState(false)
@@ -54,20 +54,32 @@ function ExamPage() {
                     <DialogTrigger asChild>
                         <Button variant="outline" className="hover:cursor-pointer"><CalendarSync /> Reschedule Exam</Button>
                     </DialogTrigger>
-                    <DialogContent>
-                        <RescheduleExamDialogContent />
+                    <DialogContent className="flex flex-col gap-4 md:max-w-[400px] max-h-[90vh] overflow-y-auto">
+                        <div>
+                            {
+                                exam
+                                    ? <RescheduleExamDialogContent exam={exam} />
+                                    : null
+                            }
+                        </div>
                     </DialogContent>
                 </Dialog>
+
                 <Dialog open={editExamOpen} onOpenChange={setEditExamOpen}>
                     <DialogTrigger asChild>
                         <Button variant="secondary" className="hover:cursor-pointer"><SquarePen />Edit Exam</Button>
                     </DialogTrigger>
                     <DialogContent >
-                        <EditExamDialogContent  />
+                        {
+                            exam
+                                ? <EditExamDialogContent exam={exam} closeDialog={()=>setEditExamOpen(!editExamOpen)} />
+                                : null
+                        }
+
                     </DialogContent>
                 </Dialog>
             </div>
-            
+
             <div className="flex flex-col md:grid grid-cols-2 gap-5 m-2 mx-5">
                 <div className="grid-stat-2 grid-end-3 flex flex-col gap-5">
                     <ExamPageTasks exam_id={Number(id)} />

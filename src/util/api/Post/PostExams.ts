@@ -1,14 +1,21 @@
 import { IExamInputState } from "@/components/ExamInput";
 import { supabase } from "@/lib/supabaseClient";
 import { dateToDoMatcherFlat, getDates, SpreadType } from "@/util/dateToDoMatcher";
+import { mutate } from "swr";
 
 export const handleExamAdd = async (examToAdd: IExamInputState, taskSpread: SpreadType, userID: string) => {
     const { title, date, toDo } = examToAdd;
-
+    console.log(date)
     // Insert exam
+    // Ensure exam_date is stored as UTC 'YYYY-MM-DD'
+    // Adjust for timezone offset to get the correct local date in UTC
+
+    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    const formattedDate = localDate.toISOString().split('T')[0];
+
     const { data: examData, error: examError } = await supabase
         .from('exams')
-        .insert({ title, exam_date: date, user_id: userID })
+        .insert({ title, exam_date: formattedDate, user_id: userID, exam_color: examToAdd.color })
         .select()
         .single();
 
@@ -45,6 +52,6 @@ export const handleExamAdd = async (examToAdd: IExamInputState, taskSpread: Spre
         throw tasksError;
     }
 
-    console.log("Exam and tasks successfully inserted");
+    mutate("exams");
     return true;
 }

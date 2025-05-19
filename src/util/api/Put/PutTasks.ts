@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabaseClient"
+import { mutate } from "swr";
 
 export async function updateTaskStatus(taskId: number, status: boolean) {
     const { data, error } = await supabase
@@ -8,5 +9,6 @@ export async function updateTaskStatus(taskId: number, status: boolean) {
         .select()
         .single()
     if (error) throw error
+    mutate(`exams/${data.exam_uid}`);
     return data
 }

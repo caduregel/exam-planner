@@ -59,7 +59,7 @@ function TasksDistributionGraph({ exam_id }: { exam_id?: number }) {
 
         return days;
     })();
-
+    
     if (tasksError) console.log("error loading tasks", tasksError)
 
     if (tasksLoading) return <ChartSkeleton />

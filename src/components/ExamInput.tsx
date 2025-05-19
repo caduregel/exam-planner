@@ -24,27 +24,31 @@ export interface IExamInputState {
     title: string;
     date: Date;
     toDo: string[];
+    color: string;
 }
+
+export const spreadOptions = [
+    { value: "even", label: "Even Spread" },
+    { value: "start", label: "Start Spread" },
+    { value: "end", label: "End Spread" },
+    { value: "middle", label: "Middle Spread" },
+]
 
 function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
     const [subject, setSubject] = useState<string>("")
     const [date, setDate] = useState<Date>(new Date)
     const [toDos, setToDos] = useState<string[]>([""])
     const [taskSpread, setTaskSpread] = useState<SpreadType>("even")
+    const [color, setColor] = useState<string>("")
 
 
     const [newExamInfo, setNewExamInfo] = useState<IExamInputState>({
         title: subject,
         date: date,
         toDo: toDos,
+        color: color
     })
 
-    const spreadOptions = [
-        { value: "even", label: "Even Spread" },
-        { value: "start", label: "Start Spread" },
-        { value: "end", label: "End Spread" },
-        { value: "middle", label: "Middle Spread" },
-    ]
 
     const [filledStatus, setFilledStatus] = useState<boolean>(false)
 
@@ -52,7 +56,8 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
         const updatedExamInfo = {
             title: subject,
             date: date,
-            toDo: toDos
+            toDo: toDos,
+            color: color
         }
         setNewExamInfo(updatedExamInfo)
         if (subject !== "" && validateDate(date) && toDos.length !== 0) {
@@ -68,7 +73,6 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
 
     const handleSubmission = () => {
         if (!userID) return;
-
         handleExamAdd(newExamInfo, taskSpread, userID)
             .then(() => {
                 setExamUpdateSuccess(true);
@@ -153,6 +157,35 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
                         {taskSpread === "middle" && "start off easy, work hard for a short while, and ease off before the exam"}
 
                     </p>
+
+                    {/* Pick a color for this exam */}
+                    <div className="flex flex-col gap-2 mt-2">
+                        <Label className="mb-1">Exam Color</Label>
+                        <div className="flex flex-wrap gap-2">
+                            {[
+                                { name: "Red", color: "#ef4444" },
+                                { name: "Orange", color: "#f59e42" },
+                                { name: "Yellow", color: "#eab308" },
+                                { name: "Green", color: "#22c55e" },
+                                { name: "Blue", color: "#3b82f6" },
+                                { name: "Purple", color: "#a855f7" },
+                                { name: "Pink", color: "#ec4899" },
+                            ].map((preset) => (
+                                <button
+                                    key={preset.color}
+                                    type="button"
+                                    className={`w-8 h-8 rounded-full border-2 border-muted-foreground/20 flex items-center justify-center transition hover:cursor-pointer
+                                        ${color === preset.color ? "ring-2 ring-offset-2 ring-primary" : ""}
+                                    `}
+                                    style={{ backgroundColor: preset.color }}
+                                    aria-label={preset.name}
+                                    onClick={() =>
+                                        setColor(preset.color)
+                                    }
+                                />
+                            ))}
+                        </div>
+                    </div>
                 </CardContent>
                 <CardFooter>
                     {filledStatus ?
