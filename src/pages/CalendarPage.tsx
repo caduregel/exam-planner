@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { supabase } from "@/lib/supabaseClient" // adjust import path
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 function CalendarPage() {
     const currentDate = new Date()
@@ -41,7 +42,7 @@ function CalendarPage() {
                 .gte("exam_date", startDate.toISOString())
                 .lte("exam_date", endDate.toISOString())
 
-                console.log(exams)
+            console.log(exams)
 
             if (taskError || examError) {
                 console.error("Error fetching data", taskError || examError)
@@ -148,9 +149,18 @@ function CalendarPage() {
                                     }
 
                                     return (
-                                        <div key={index} style={style} className="text-[10px] md:text-xs truncate rounded px-1">
-                                            {item.title}
-                                        </div>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger >
+                                                    <div key={index} style={style} className="text-[10px] md:text-xs truncate text-start rounded px-1 dark:text-black">
+                                                        {item.title}
+                                                    </div>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>{item.title}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
                                     )
                                 })}
                         </div>
