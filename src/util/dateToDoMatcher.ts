@@ -17,24 +17,24 @@ export type SpreadType = "even" | "start" | "end" | "middle"
  * - end: Concentrates tasks heavily at the end with fewer at the beginning
  * - middle: Concentrates tasks in the middle days (bell curve distribution)
  */
-function spreadIndex(normalized: number, spread: SpreadType): number {
-  switch (spread) {
-    case "even":
-      return normalized;
-    case "start":
-      // Use stronger power for heavier bias toward start (0)
-      return Math.pow(normalized, 2);
-    case "end":
-      // Use stronger power for heavier bias toward end (1)
-      return Math.pow(normalized, 0.5);
-    case "middle":
-      // Gaussian-like function to create a strong concentration in the middle
-      // This creates a proper bell curve centered at 0.5
-      return 0.5 + (normalized - 0.5) * Math.exp(-8 * Math.pow(normalized - 0.5, 2));
-    default:
-      return normalized;
-  }
-}
+// function spreadIndex(normalized: number, spread: SpreadType): number {
+//   switch (spread) {
+//     case "even":
+//       return normalized;
+//     case "start":
+//       // Use stronger power for heavier bias toward start (0)
+//       return Math.pow(normalized, 2);
+//     case "end":
+//       // Use stronger power for heavier bias toward end (1)
+//       return Math.pow(normalized, 0.5);
+//     case "middle":
+//       // Gaussian-like function to create a strong concentration in the middle
+//       // This creates a proper bell curve centered at 0.5
+//       return 0.5 + (normalized - 0.5) * Math.exp(-8 * Math.pow(normalized - 0.5, 2));
+//     default:
+//       return normalized;
+//   }
+// }
 
 export interface ITaskItem {
   title: string;
