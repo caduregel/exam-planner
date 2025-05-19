@@ -7,20 +7,26 @@ import { SquareArrowOutUpRight, Trash2 } from "lucide-react"
 import { format } from "date-fns"
 import { ITask } from "@/interfaces/ITask"
 import { updateTaskStatus } from "@/util/api/Put/PutTasks"
-import { mutate } from "swr"
+import useSWR, { mutate } from "swr"
 import { Link } from "react-router"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { getExamColorById } from "@/util/api/Get/GetExams"
 
 interface InlineTaskItemProps {
     task: ITask
     onDelete: (id: number) => void
     examNav?: boolean;
+    color?: string
 }
 
-export function TaskCard({ task, onDelete, examNav = true }: InlineTaskItemProps) {
+export function TaskCard({ task, onDelete, examNav = true, color = "#ccc" }: InlineTaskItemProps) {
     const [status, setStatus] = useState(task.status)
-
     const debounceTimers = useRef<{ [key: number]: NodeJS.Timeout }>({})
+
+    const { data: examColor, isLoading } = useSWR(
+        `exams/${task.exam_id}/color`,
+        () => getExamColorById(task.exam_id),
+    )
 
     // Debounced status update
     const handleStatusChange = (checked: boolean) => {
@@ -46,7 +52,12 @@ export function TaskCard({ task, onDelete, examNav = true }: InlineTaskItemProps
     }
 
     return (
-        <Card className="w-full border border-muted p-2">
+        <Card
+            className="w-full border border-muted p-2"
+            style={{
+                borderLeft: `6px solid ${isLoading ? "#eee" : examColor ?? color ?? "#ccc"}`
+            }}
+        >
             <CardContent className="flex items-center space-x-3 py-1 px-2">
                 <Checkbox
                     id={`task-${task.id}`}
