@@ -19,7 +19,7 @@ const presetColors = [
 
 function EditExamDialogContent({ exam, closeDialog }: { exam: IExamInfo, closeDialog: () => void }) {
   const [title, setTitle] = useState<string>(exam.title)
-  const [color, setColor] = useState<string>(exam.color || "#ef4444")
+  const [color, setColor] = useState<string>(exam.exam_color || "#ef4444")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -27,7 +27,7 @@ function EditExamDialogContent({ exam, closeDialog }: { exam: IExamInfo, closeDi
     setLoading(true)
     setError(null)
     try {
-      await handleExamUpdate(Number(exam.id), { ...exam, title, color })
+      await handleExamUpdate(Number(exam.id), { ...exam, title, exam_color: color })
       closeDialog()
     } catch (e) {
       setError("Failed to update exam.")
