@@ -16,7 +16,7 @@ const chartConfig = {
 
 function TasksDistributionGraph({ exam_id }: { exam_id?: number }) {
     const fetcher = () => exam_id ? getTasksForExam(Number(exam_id)) : getTasks()
-    const key = exam_id ? `exams${exam_id}/tasks` : "exams"
+    const key = exam_id ? `exams/${exam_id}/tasks` : "exams/all/tasks"
     const { data: tasks, error: tasksError, isLoading: tasksLoading } = useSWR<ITask[]>(key, fetcher)
 
     // Compute chartData: count of tasks per day between first and last task date

@@ -56,5 +56,6 @@ export const handleExamAdd = async (examToAdd: IExamInputState, taskSpread: Spre
 
     mutate("dashboard/exams");
     mutate("examsPage/exams");
+    mutate(`exams/all/tasks`)
     return true;
 }

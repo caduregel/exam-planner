@@ -10,5 +10,6 @@ export async function updateTaskStatus(taskId: number, status: boolean) {
         .single()
     if (error) throw error
     mutate(`exams/${data.exam_uid}`);
+    mutate(`exams/all/tasks`);
     return data
 }

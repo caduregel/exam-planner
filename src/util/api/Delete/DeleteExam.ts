@@ -9,5 +9,6 @@ export async function deleteExam(examId: number) {
     if (error) throw error;
     mutate("dashboard/exams");
     mutate("examsPage/exams");
+    mutate(`exams/all/tasks`)
     return true
 }
