@@ -114,7 +114,7 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-4">
                     <Label className="m-1">Exam name</Label>
-                    <Input placeholder="E.g Bio Nervous System" value={subject} onChange={(e) => { setSubject(e.target.value) }} />
+                    <Input placeholder="E.g Chemistry final " value={subject} onChange={(e) => { setSubject(e.target.value) }} />
 
                     <Label className="m-2">To Do</Label>
                     {newExamInfo.toDo.map((item, index) => (
