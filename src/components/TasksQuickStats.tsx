@@ -23,11 +23,16 @@ function TasksQuickStats({ exam_id }: TasksQuickStatsProps) {
         ? Math.round((completedTasks / totalTasks) * 100)
         : 0;
 
-    // Calculate past due tasks
+    const formatToLocalDateString = (date: Date): string => {
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return localDate.toISOString().split('T')[0];
+    };
+
+    const todayDateString = formatToLocalDateString(new Date());
+
     const pastDueTasks: number = tasks?.filter((task: ITask) => {
-        const dueDate = new Date(task.due_date);
-        const currentDate = new Date();
-        return dueDate < currentDate && task.status === false;
+        const taskDateString = formatToLocalDateString(new Date(task.due_date));
+        return taskDateString < todayDateString && task.status === false;
     }).length || 0;
 
     return (
