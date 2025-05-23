@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
+import { mutate } from "swr";
 
 export async function deleteExam(examId: number) {
     const { error } = await supabase
@@ -6,5 +7,7 @@ export async function deleteExam(examId: number) {
         .delete()
         .eq('id', examId);
     if (error) throw error;
-    return true 
+    mutate("dashboard/exams");
+    mutate("examsPage/exams");
+    return true
 }

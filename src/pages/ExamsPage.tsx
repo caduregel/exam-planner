@@ -20,7 +20,7 @@ function ExamsPage() {
         <>
             <div className="p-5 w-full">
                 <div className="flex gap-5 lg:flex-row flex-col lg:justify-between">
-                    <UpcomingExams />
+                    <UpcomingExams swrKey="examsPage/exams" />
                     <ExampInput setExamUpdateSuccess={setExamUpdateSuccess} />
                     {examAddSuccess && (
                         <Alert className="fixed bottom-5 max-w-fit right-4 bg-green-500 dark:bg-green-700 border-green-500 text-green-100 dark:text-green-400 transition-opacity opacity-100 duration-300 ease-in-out">

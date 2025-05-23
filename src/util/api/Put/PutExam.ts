@@ -102,6 +102,7 @@ export const handleExamUpdate = async (
     console.log("Exam successfully updated");
     mutate(`exams/${examId}`);
     mutate(`exams/${examId}/color`) // Revalidate the SWR cache for the exam
-    mutate(`exams`);
+    mutate("dashboard/exams");
+    mutate("examsPage/exams");
     return true;
 }

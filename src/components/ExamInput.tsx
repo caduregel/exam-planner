@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { SpreadType } from "@/util/dateToDoMatcher"
 import { useAuth } from "./providers/AuthProvider"
 import { handleExamAdd } from "@/util/api/Post/PostExams"
+import { toast } from "sonner"
 
 interface IExamInputProps {
     setExamUpdateSuccess: (value: boolean) => void;
@@ -64,18 +65,22 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
             setFilledStatus(true)
         } else setFilledStatus(false)
     }, [
-        subject, date, toDos
+        subject, date, toDos, color
     ])
 
     const { session } = useAuth()
 
     const userID = session?.user.id
-
     const handleSubmission = () => {
         if (!userID) return;
+        
+        console.log(newExamInfo)
         handleExamAdd(newExamInfo, taskSpread, userID)
             .then(() => {
                 setExamUpdateSuccess(true);
+                toast("Exam successfully added", {
+                    description: "sdafkmdasf"
+                })
                 setSubject("");
                 setDate(new Date());
                 setToDos([""]);

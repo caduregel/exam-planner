@@ -34,7 +34,7 @@ function Dashboard() {
                         <TodaysTasks />
                         <TasksDistributionGraph />
                     </div>
-                    <UpcomingExams />
+                    <UpcomingExams swrKey="dashboard/exams"/>
                 </div>
                 <div className="col-start-8 col-end-11 row-start-1 w-full flex flex-col gap-5">
                     <TasksQuickStats />
