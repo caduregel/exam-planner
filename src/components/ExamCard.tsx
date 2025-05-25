@@ -25,7 +25,7 @@ function ExamCard({ exam }: { exam: IExamInfo }) {
                 style={{ borderLeft: `6px solid ${exam.exam_color}` }}
                 onClick={() => { console.log(exam) }}
             >
-                <CardContent className="flex gap-5 md:flex-row md:justify-between md:gap-5 flex-col items-start">
+                <CardContent className="flex gap-5 md:flex-row md:justify-between md:gap-5 flex-col items-start items-center">
                     <div className="flex flex-col md:flex-row md:items-center md:gap-5 w-full md:overflow-x-auto">
                         <Label className="whitespace-nowrap md:mr-4">
                             {new Date(exam.exam_date).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}

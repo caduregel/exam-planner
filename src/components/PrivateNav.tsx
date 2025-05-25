@@ -27,7 +27,7 @@ function PrivateNav() {
                                 <Link to="/home/" onClick={handleNavigation}>
                                     <LayoutDashboard />
                                     <p className="text-lg">
-                                        Dasboard
+                                        Dashboard
                                     </p>
                                 </Link>
                             </SidebarMenuButton>
