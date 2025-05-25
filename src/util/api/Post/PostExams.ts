@@ -31,7 +31,6 @@ export const handleExamAdd = async (examToAdd: IExamInputState, taskSpread: Spre
     // Generate date range (today to day before exam)
     const today = new Date();
     const dayBeforeExam = new Date(date);
-    dayBeforeExam.setDate(dayBeforeExam.getDate() - 1);
 
     const dateRange = getDates(today, dayBeforeExam);
     const tasks = dateToDoMatcherFlat(dateRange, toDo, taskSpread);
