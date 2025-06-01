@@ -1,7 +1,7 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import { Link } from "react-router";
 import { CalendarRange, LayoutDashboard, ListCheck, NotebookPen } from "lucide-react";
-import logoURL from "../assets/logo.svg"
+import Logo from "./Logo";
 
 function PrivateNav() {
     const { setOpenMobile, isMobile } = useSidebar();
@@ -17,7 +17,7 @@ function PrivateNav() {
             <Sidebar>
                 <SidebarHeader className="flex flex-row items-center gap-2 p-5">
                     <Link to="/home/" className="flex items-center gap-5">
-                        <img src={logoURL} className="" />
+                        <Logo />
                     </Link>
                 </SidebarHeader>
                 <SidebarContent>

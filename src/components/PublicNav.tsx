@@ -3,7 +3,7 @@ import { Button } from "./ui/button"
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
-import logoURL from "../assets/logo.svg"
+import Logo from "./Logo";
 
 
 function PublicNav() {
@@ -22,7 +22,7 @@ function PublicNav() {
     return (
         <nav className={`sticky top-0 z-50 px-4 py-2 flex gap-2 flex-col items-center md:flex-row md:justify-between bg-background transition-shadow ${scrolled && "shadow-md"}`}>
             <Link to="/">
-                <img src={logoURL} className="" />
+                <Logo />
             </Link>
 
             <div className="hidden md:flex gap-5 items-center">
