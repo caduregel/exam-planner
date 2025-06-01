@@ -29,7 +29,7 @@ function LandingPage() {
                 </div>
                 <img src="/favicon.svg" alt="logo" className="w-50 h-50 hidden md:inline" />
             </div>
-            <Carousel className="bg-gradient-to-r from-blue-50 to-purple-50 p-10 rounded-2xl" >
+            <Carousel className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 p-10 rounded-2xl" >
                 <CarouselContent>
                     <CarouselItem>
                         <div className="overflow-hidden w-full h-40 sm:h-auto sm:w-auto">
