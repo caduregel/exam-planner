@@ -20,7 +20,7 @@ function PublicNav() {
     }, []);
 
     return (
-        <nav className={`sticky top-0 z-50 px-4 py-2 flex gap-2 flex-col items-center md:flex-row md:justify-between bg-background transition-shadow ${scrolled && "shadow-md"}`}>
+        <nav className={`sticky duration-700 transition-all bg-background top-0 z-50 px-4 py-2 flex gap-2 flex-col items-center md:flex-row md:justify-between ${scrolled && "shadow-md dark:shadow-neutral-900"}`}>
             <Link to="/">
                 <Logo />
             </Link>

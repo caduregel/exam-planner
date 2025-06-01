@@ -14,7 +14,7 @@ function PrivateNav() {
 
     return (
         <>
-            <Sidebar>
+            <Sidebar className="duration-700 transition-all bg-white dark:bg-neutral-950">
                 <SidebarHeader className="flex flex-row items-center gap-2 p-5">
                     <Link to="/home/" className="flex items-center gap-5">
                         <Logo />

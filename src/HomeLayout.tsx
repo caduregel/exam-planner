@@ -15,7 +15,7 @@ function HomeLayout() {
   return (
     <>
       <ProtectedRoute>
-        <div className="flex flex-col items-center justify-center min-h-svh">
+        <div className="flex flex-col items-center justify-center min-h-svh duration-700 transition-all">
           <SidebarProvider>
             <PrivateNav />
             <main className='p-2 w-full min-h-screen flex flex-col'>

@@ -12,10 +12,12 @@ const router = createBrowserRouter(routes);
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-        <Analytics framework="react" />
-      </AuthProvider>
+      <div className='transition-colors duration-700 bg-white dark:bg-neutral-950'>
+        <AuthProvider>
+          <RouterProvider router={router} />
+          <Analytics framework="react" />
+        </AuthProvider>
+      </div>
     </ThemeProvider>
-  </StrictMode>,
+  </StrictMode >,
 )
