@@ -3,6 +3,8 @@ import { Button } from "./ui/button"
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import logoURL from "../assets/logo.svg"
+
 
 function PublicNav() {
     const [scrolled, setScrolled] = useState(false);
@@ -18,7 +20,11 @@ function PublicNav() {
     }, []);
 
     return (
-        <nav className={`sticky top-0 z-50 p-4 flex gap-2 flex-col items-center md:flex-row md:justify-between bg-background transition-shadow ${scrolled && "shadow-md"}`}>
+        <nav className={`sticky top-0 z-50 px-4 py-2 flex gap-2 flex-col items-center md:flex-row md:justify-between bg-background transition-shadow ${scrolled && "shadow-md"}`}>
+            <Link to="/">
+                <img src={logoURL} className="" />
+            </Link>
+
             <div className="hidden md:flex gap-5 items-center">
                 <Button variant="ghost" asChild className="text-md"><Link to="/">home</Link></Button>
                 <Button variant="ghost" asChild className="text-md"><Link to="/about" >about</Link></Button>

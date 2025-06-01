@@ -1,6 +1,7 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import { Link } from "react-router";
 import { CalendarRange, LayoutDashboard, ListCheck, NotebookPen } from "lucide-react";
+import logoURL from "../assets/logo.svg"
 
 function PrivateNav() {
     const { setOpenMobile, isMobile } = useSidebar();
@@ -16,8 +17,7 @@ function PrivateNav() {
             <Sidebar>
                 <SidebarHeader className="flex flex-row items-center gap-2 p-5">
                     <Link to="/home/" className="flex items-center gap-5">
-                        <img src="https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png" className="size-10 rounded-lg" />
-                        <h1 className="text-xl font-semibold">Exam Planner</h1>
+                        <img src={logoURL} className="" />
                     </Link>
                 </SidebarHeader>
                 <SidebarContent>
