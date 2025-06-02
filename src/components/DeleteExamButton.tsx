@@ -18,7 +18,7 @@ function DeleteExamButton({ examId }: { examId: number }) {
     const navigate = useNavigate();
     const handleDelete = () => {
         deleteExam(examId).then((result: boolean) => {
-            if (result == true) toast("Exam deleted successfully", {
+            if (result == true) toast.success("Exam deleted successfully", {
                 description: "The exam has been deleted successfully.",
                 duration: 3000,
             })
