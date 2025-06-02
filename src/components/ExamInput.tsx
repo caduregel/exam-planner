@@ -79,7 +79,7 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
             .then(() => {
                 setExamUpdateSuccess(true);
                 toast("Exam successfully added", {
-                    description: "sdafkmdasf"
+                    description: "The exam has been succesfully added to our database"
                 })
                 setSubject("");
                 setDate(new Date());
