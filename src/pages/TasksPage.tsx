@@ -56,7 +56,7 @@ function TasksPage() {
             if (!prevTasks) return []
             return prevTasks.filter((task) => task.id !== taskId)
         })
-        if (success) toast("Task deleted successfully", {
+        if (success) toast.success("Task deleted successfully", {
             description: "The task has been deleted successfully.",
             duration: 3000,
             action: deletedTask

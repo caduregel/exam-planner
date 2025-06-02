@@ -24,7 +24,7 @@ function DeleteExamButton({ examId }: { examId: number }) {
             })
             navigate("/home", { replace: true })
         }).catch((error) => {
-            toast("Error deleting exam", {
+            toast.error("Error deleting exam", {
                 description: "There was a problem deleting this exam, try again later",
                 duration: 3000,
             })

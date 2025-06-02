@@ -17,10 +17,6 @@ import { useAuth } from "./providers/AuthProvider"
 import { handleExamAdd } from "@/util/api/Post/PostExams"
 import { toast } from "sonner"
 
-interface IExamInputProps {
-    setExamUpdateSuccess: (value: boolean) => void;
-}
-
 export interface IExamInputState {
     title: string;
     date: Date;
@@ -35,7 +31,7 @@ export const spreadOptions = [
     { value: "middle", label: "Middle Spread" },
 ]
 
-function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
+function ExampInput() {
     const [subject, setSubject] = useState<string>("")
     const [date, setDate] = useState<Date>(new Date)
     const [toDos, setToDos] = useState<string[]>([""])
@@ -77,10 +73,7 @@ function ExampInput({ setExamUpdateSuccess }: IExamInputProps) {
         console.log(newExamInfo)
         handleExamAdd(newExamInfo, taskSpread, userID)
             .then(() => {
-                setExamUpdateSuccess(true);
-                toast("Exam successfully added", {
-                    description: "The exam has been succesfully added to our database"
-                })
+                toast.success("Exam successfully added")
                 setSubject("");
                 setDate(new Date());
                 setToDos([""]);

@@ -34,7 +34,7 @@ function HomeLayout() {
                 </div>
               </div>
               <Outlet />
-              <Toaster />
+              <Toaster richColors/>
             </main>
           </SidebarProvider>
         </div>
