@@ -38,7 +38,7 @@ function Dashboard() {
                 </div>
                 <div className="col-start-8 col-end-11 row-start-1 w-full flex flex-col gap-5">
                     <TasksQuickStats />
-                    <ExampInput setExamUpdateSuccess={setExamUpdateSuccess} />
+                    <ExampInput  />
                 </div>
                 {examAddSuccess && (
                     <Alert className="fixed bottom-5 max-w-fit right-4 bg-green-500 dark:bg-green-700 border-green-500 text-green-100 dark:text-green-400 transition-opacity opacity-100 duration-300 ease-in-out">
