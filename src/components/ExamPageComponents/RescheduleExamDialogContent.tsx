@@ -19,16 +19,16 @@ type rescheduleWhichTasks = "all" | "uncompleted" | "expired"
 
 function RescheduleExamDialogContent({ exam }: { exam: IExamInfo }) {
   const { data: examTasks } = useSWR<ITask[]>(`exams/${exam.id}/tasks`, () => getTasksForExam(Number(exam.id)))
-  
+
   const [date, setDate] = useState<Date | undefined>(new Date(exam.exam_date))
   const [rescheduleType, setRescheduleType] = useState<rescheduleWhichTasks>("all")
   const [taskSpread, setTaskSpread] = useState<SpreadType>("even")
-  
+
   const spreadOptions = [
-      { value: "even", label: "Even Spread" },
-      { value: "start", label: "Start Spread" },
-      { value: "end", label: "End Spread" },
-      { value: "middle", label: "Middle Spread" },
+    { value: "even", label: "Even Spread" },
+    { value: "start", label: "Start Spread" },
+    { value: "end", label: "End Spread" },
+    { value: "middle", label: "Middle Spread" },
   ]
 
   const handleSubmit = () => {
@@ -39,7 +39,9 @@ function RescheduleExamDialogContent({ exam }: { exam: IExamInfo }) {
       if (rescheduleType === "expired") return new Date(task.due_date) < new Date()
       return false
     }
-    ).map((task) => task.id)
+    )
+      .sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime())
+      .map((task) => task.id)
 
     // Create to dos
     const toDo: string[] | undefined = examTasks?.filter((task) => {
