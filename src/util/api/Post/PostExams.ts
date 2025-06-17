@@ -33,6 +33,7 @@ export const handleExamAdd = async (examToAdd: IExamInputState, taskSpread: Spre
     const dayBeforeExam = new Date(date);
 
     const dateRange = getDates(today, dayBeforeExam);
+    console.log("Date Range:", dateRange);
     const tasks = dateToDoMatcherFlat(dateRange, toDo, taskSpread);
 
     // Prepare tasks array for Supabase

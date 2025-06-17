@@ -107,30 +107,40 @@ function calculateDistribution(
   const distribution = new Array(numDays).fill(0);
   
   if (spread === "even") {
-    // Distribute tasks evenly, with any extras going to the first days
-    const baseTasksPerDay = Math.floor(numTasks / numDays);
-    const extraTasks = numTasks % numDays;
-    
-    for (let i = 0; i < numDays; i++) {
-      distribution[i] = baseTasksPerDay + (i < extraTasks ? 1 : 0);
+    // Distribute tasks evenly across the time span with gaps
+    if (numTasks >= numDays) {
+      // More tasks than days: distribute normally
+      const baseTasksPerDay = Math.floor(numTasks / numDays);
+      const extraTasks = numTasks % numDays;
+      
+      for (let i = 0; i < numDays; i++) {
+        distribution[i] = baseTasksPerDay + (i < extraTasks ? 1 : 0);
+      }
+    } else {
+      // Fewer tasks than days: spread evenly with gaps
+      const interval = numDays / numTasks;
+      
+      for (let i = 0; i < numTasks; i++) {
+        const dayIndex = Math.round(i * interval);
+        // Ensure we don't exceed array bounds
+        const clampedIndex = Math.min(dayIndex, numDays - 1);
+        distribution[clampedIndex] = 1;
+      }
     }
   } else if (spread === "start") {
     // More tasks at the beginning, decreasing towards the end
-    // Create a decreasing curve based on position
     const weights = Array(numDays).fill(0).map((_, i) => {
       return numDays - i;
     });
     distributeThroughWeights(distribution, numTasks, weights);
   } else if (spread === "end") {
     // More tasks at the end, increasing towards the end
-    // Create an increasing curve based on position
     const weights = Array(numDays).fill(0).map((_, i) => {
       return i + 1;
     });
     distributeThroughWeights(distribution, numTasks, weights);
   } else if (spread === "middle") {
     // More tasks in the middle, fewer at both ends
-    // Create a curve that peaks in the middle
     const weights = Array(numDays).fill(0).map((_, i) => {
       const distanceFromMiddle = Math.abs(i - (numDays - 1) / 2);
       return numDays - 2 * distanceFromMiddle;
