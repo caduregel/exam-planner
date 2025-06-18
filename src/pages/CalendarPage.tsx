@@ -30,39 +30,64 @@ function CalendarPage() {
             const startDate = new Date(Date.UTC(selectedMonth.year, selectedMonth.month, 1, 0, 0, 0, 0))
             const endDate = new Date(Date.UTC(selectedMonth.year, selectedMonth.month + 1, 0, 23, 59, 59, 999))
 
+            // 1. Fetch tasks for the month
             const { data: tasks, error: taskError } = await supabase
                 .from("tasks")
                 .select("*")
                 .gte("due_date", startDate.toISOString())
                 .lte("due_date", endDate.toISOString())
 
+            // 2. Get all unique examIds from those tasks
+            const examIdsFromTasks = tasks ? [...new Set(tasks.map((task: any) => task.exam_id).filter(Boolean))] : []
+
+            // 3. Fetch all exams with those IDs (regardless of date)
+            let examsById: any[] = []
+            if (examIdsFromTasks.length > 0) {
+                const { data: examsByTask, error: examsByTaskError } = await supabase
+                    .from("exams")
+                    .select("*")
+                    .in("id", examIdsFromTasks)
+                if (examsByTaskError) {
+                    console.error("Error fetching exams by id", examsByTaskError)
+                } else {
+                    examsById = examsByTask || []
+                }
+            }
+
+            // 4. Fetch exams in the current month (as before)
             const { data: exams, error: examError } = await supabase
                 .from("exams")
                 .select("*")
                 .gte("exam_date", startDate.toISOString())
                 .lte("exam_date", endDate.toISOString())
 
-            console.log(exams)
-
             if (taskError || examError) {
                 console.error("Error fetching data", taskError || examError)
                 return
             }
 
+            // 5. Merge and deduplicate exams
+            const allExams = [...(exams || []), ...examsById]
+            const examsMap = new Map()
+            allExams.forEach((exam: any) => examsMap.set(exam.id, exam))
+            const dedupedExams = Array.from(examsMap.values())
+
+            // 6. Group items by day
             const grouped: Record<number, any[]> = {}
-                ;[...(tasks || []), ...(exams || [])].forEach((item) => {
-                    const date = new Date(item.due_date || item.exam_date)
-                    const day = date.getDate()
-                    if (!grouped[day]) grouped[day] = []
-                    grouped[day].push(item)
-                })
+            ;[...(tasks || []), ...dedupedExams].forEach((item) => {
+                const date = new Date(item.due_date || item.exam_date)
+                const day = date.getDate()
+                if (!grouped[day]) grouped[day] = []
+                grouped[day].push(item)
+            })
 
             setItemsByDay(grouped)
         }
-
         fetchData()
     }, [selectedMonth])
     
+    console.log(itemsByDay)
+
     return (
         <div className="flex flex-col gap-5 md:p-5 py-5">
             <Select
@@ -147,6 +172,17 @@ function CalendarPage() {
                                         }
                                     } else {
                                         style = { backgroundColor: "rgba(34,197,94,0.2)" }
+                                    }
+
+                                    if (isExam && item.exam_date) {
+                                        const examDate = new Date(item.exam_date)
+                                        if (
+                                            examDate.getFullYear() !== selectedMonth.year ||
+                                            examDate.getMonth() !== selectedMonth.month
+                                        ) {
+                                            // Skip rendering this exam if not in the selected month
+                                            return null
+                                        }
                                     }
 
                                     return (
