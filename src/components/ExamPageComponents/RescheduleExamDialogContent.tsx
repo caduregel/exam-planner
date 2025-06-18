@@ -13,6 +13,7 @@ import useSWR from "swr"
 import { getTasksForExam } from "@/util/api/Get/GetTasks"
 import { ITask } from "@/interfaces/ITask"
 import { handleExamReschedule } from "@/util/api/Put/PutExam"
+import { toast } from "sonner"
 
 
 type rescheduleWhichTasks = "all" | "uncompleted" | "expired"
@@ -24,6 +25,8 @@ function RescheduleExamDialogContent({ exam }: { exam: IExamInfo }) {
   const [rescheduleType, setRescheduleType] = useState<rescheduleWhichTasks>("all")
   const [taskSpread, setTaskSpread] = useState<SpreadType>("even")
 
+  const [loading, setLoading] = useState(false)
+
   const spreadOptions = [
     { value: "even", label: "Even Spread" },
     { value: "start", label: "Start Spread" },
@@ -32,25 +35,27 @@ function RescheduleExamDialogContent({ exam }: { exam: IExamInfo }) {
   ]
 
   const handleSubmit = () => {
+    setLoading(true)
+    // Sort tasks by created_at before filtering and mapping
+    const sortedTasks = examTasks?.slice().sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+
     // Find the tasks to reschedule
-    const tasksToReschedule: number[] | undefined = examTasks?.filter((task) => {
+    const tasksToReschedule: number[] | undefined = sortedTasks?.filter((task) => {
       if (rescheduleType === "all") return true
       if (rescheduleType === "uncompleted") return !task.status
       if (rescheduleType === "expired") return new Date(task.due_date) < new Date()
       return false
-    }
-    )
-      .sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime())
-      .map((task) => task.id)
+    })
+    .map((task) => task.id)
 
     // Create to dos
-    const toDo: string[] | undefined = examTasks?.filter((task) => {
+    const toDo: string[] | undefined = sortedTasks?.filter((task) => {
       if (rescheduleType === "all") return true
       if (rescheduleType === "uncompleted") return !task.status
       if (rescheduleType === "expired") return new Date(task.due_date) < new Date()
       return false
-    }
-    ).map((task) => task.title)
+    })
+    .map((task) => task.title)
 
     if (!tasksToReschedule || tasksToReschedule.length === 0 || !toDo || toDo.length === 0) {
       console.error("No tasks to reschedule")
@@ -63,7 +68,10 @@ function RescheduleExamDialogContent({ exam }: { exam: IExamInfo }) {
       toDo,
       taskSpread,
       date
-    )
+    ).then((data: boolean) => {
+      if (data) setLoading(false)
+      toast.success("Exam rescheduled successfully!")
+    })
   }
 
   return (
@@ -134,7 +142,7 @@ function RescheduleExamDialogContent({ exam }: { exam: IExamInfo }) {
 
       <DialogFooter>
         <Button className="hover:cursor-pointer" variant="secondary" onClick={() => { }}>Cancel</Button>
-        <Button className="hover:cursor-pointer" variant="default" onClick={handleSubmit}>
+        <Button className="hover:cursor-pointer" variant="default" onClick={handleSubmit} {...loading ? { disabled: true } : {}} >
           Reschedule
         </Button>
       </DialogFooter>

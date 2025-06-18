@@ -20,6 +20,7 @@ export const DynamicBreadCrumbs: React.FC = () => {
     const cumulativePaths = pathSegments.map((_, index) => {
         return `/${pathSegments.slice(0, index + 1).join("/")}`
     })
+    console.log("Cumulative Paths:", cumulativePaths)
 
     return (
         <Breadcrumb>
