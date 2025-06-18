@@ -62,6 +62,7 @@ function CalendarPage() {
 
         fetchData()
     }, [selectedMonth])
+    
     return (
         <div className="flex flex-col gap-5 md:p-5 py-5">
             <Select
@@ -157,7 +158,32 @@ function CalendarPage() {
                                                     </div>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <p>{item.title}</p>
+                                                    <p>
+                                                        {item.exam_date ? (
+                                                            <b>{item.title}</b>
+                                                        ) : (
+                                                            <>
+                                                                <b>
+                                                                    {
+                                                                        // Find the exam for this task
+                                                                        (() => {
+                                                                            if (item.exam_id && itemsByDay) {
+                                                                                for (const dayItems of Object.values(itemsByDay)) {
+                                                                                    const foundExam = dayItems.find(
+                                                                                        (i: any) => i.exam_date && i.id === item.exam_id
+                                                                                    )
+                                                                                    if (foundExam) return foundExam.title
+                                                                                }
+                                                                            }
+                                                                            return ""
+                                                                        })()
+                                                                    }
+                                                                </b>
+                                                                {item.exam_id && " - "}
+                                                                {item.title}
+                                                            </>
+                                                        )}
+                                                    </p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
