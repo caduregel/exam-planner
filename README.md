@@ -17,3 +17,6 @@ The project uses the following technologies:
 
 Live demo:
 https://studyflows.net/home
+
+Liam, 6v.in1
+Teacher: Alborz
