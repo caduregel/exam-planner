@@ -1,7 +1,6 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import { Link } from "react-router";
 import { CalendarRange, LayoutDashboard, ListCheck, NotebookPen } from "lucide-react";
-import Logo from "./Logo";
 
 function PrivateNav() {
     const { setOpenMobile, isMobile } = useSidebar();
@@ -16,8 +15,8 @@ function PrivateNav() {
         <>
             <Sidebar className="duration-700 transition-all bg-white dark:bg-neutral-950">
                 <SidebarHeader className="flex flex-row items-center gap-2 p-5">
-                    <Link to="/home/" className="flex items-center gap-5">
-                        <Logo />
+                    <Link to="/home/" className="flex items-center gap-5 hover:cursor-pointer">
+                        <img src="https://broklede.nl/wp-content/uploads/sites/2/2025/10/Broklede-logo-2025.jpg-nieuw.jpeg" alt="broklede logo" />
                     </Link>
                 </SidebarHeader>
                 <SidebarContent>
